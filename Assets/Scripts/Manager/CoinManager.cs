@@ -18,18 +18,14 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.UpdateCoins.AddListener(UpdateCoins);
-            MyEventManager.Instance.OnCompletedAwardAd.AddListener(AwardCoins);
+            MyEventManager.UpdateCoins.AddListener(UpdateCoins);
+            MyEventManager.OnCompletedAwardAd.AddListener(AwardCoins);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.UpdateCoins.RemoveListener(UpdateCoins);
-                MyEventManager.Instance.OnCompletedAwardAd.RemoveListener(AwardCoins);
-            }
-
+                MyEventManager.UpdateCoins.RemoveListener(UpdateCoins);
+                MyEventManager.OnCompletedAwardAd.RemoveListener(AwardCoins);
         }
 
         private void UpdatePreviousValue()
@@ -44,7 +40,7 @@ namespace BallDrop
                 m_Coins = PreferenceManager.Instance.GetIntPref(PrefKey.Coins, 0);
                 m_PreviousValue = m_Coins;
                 PreferenceManager.Instance.IncrementIntPref(PrefKey.Coins, 0);
-                MyEventManager.Instance.OnCoinsUpdated.Dispatch(++m_Coins);
+                MyEventManager.OnCoinsUpdated.Dispatch(++m_Coins);
             }
         }
 
@@ -53,7 +49,7 @@ namespace BallDrop
             print("Awarded coins = " + amount);
             m_Coins = PreferenceManager.Instance.GetIntPref(PrefKey.Coins, 0);
             PreferenceManager.Instance.UpdateIntPref(PrefKey.Coins, m_Coins + amount);
-            MyEventManager.Instance.OnCoinsAwarded.Dispatch(m_Coins + amount);
+            MyEventManager.OnCoinsAwarded.Dispatch(m_Coins + amount);
             UpdatePreviousValue();
             Debug.unityLogger.Log(GameData.TAG, "total coins = " + m_Coins);
         }

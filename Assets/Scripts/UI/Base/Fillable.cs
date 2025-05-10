@@ -10,15 +10,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.EndGame.AddListener(EndGame);
+            MyEventManager.EndGame.AddListener(EndGame);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.EndGame.RemoveListener(EndGame);
-            }
+                MyEventManager.EndGame.RemoveListener(EndGame);
         }
 
         private void Start()

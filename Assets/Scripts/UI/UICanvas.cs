@@ -20,18 +20,14 @@ namespace BallDrop
 
         private void OnEnable()
         {
-           // MyEventManager.Instance.ShowMenu.AddListener(ShowMenu);
-            //MyEventManager.Instance.EndGame.AddListener(OnGameEnd);
+           // MyEventManager.ShowMenu.AddListener(ShowMenu);
+            //MyEventManager.EndGame.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-               // MyEventManager.Instance.ShowMenu.RemoveListener(ShowMenu);
-                // MyEventManager.Instance.EndGame.RemoveListener(OnGameEnd);
-
-            }
+               // MyEventManager.ShowMenu.RemoveListener(ShowMenu);
+                // MyEventManager.EndGame.RemoveListener(OnGameEnd);
         }
 
         private void OnGameEnd()

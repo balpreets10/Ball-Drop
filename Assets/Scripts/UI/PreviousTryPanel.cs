@@ -20,16 +20,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnPlayerActivated.AddListener(OnPlayerActivated);
+            MyEventManager.OnPlayerActivated.AddListener(OnPlayerActivated);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnPlayerActivated.RemoveListener(OnPlayerActivated);
-
-            }
+                MyEventManager.OnPlayerActivated.RemoveListener(OnPlayerActivated);
         }
 
         private void OnPlayerActivated()

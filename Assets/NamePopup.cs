@@ -16,15 +16,12 @@ public class NamePopup : Popup
 
     private void OnEnable()
     {
-        MyEventManager.Instance.GetPlayerName.AddListener(ShowPopup);
+        MyEventManager.GetPlayerName.AddListener(ShowPopup);
     }
 
     private void OnDisable()
     {
-        if (MyEventManager.Instance != null)
-        {
-            MyEventManager.Instance.GetPlayerName.RemoveListener(ShowPopup);
-        }
+            MyEventManager.GetPlayerName.RemoveListener(ShowPopup);
     }
 
     public void Start()
@@ -56,7 +53,7 @@ public class NamePopup : Popup
         PreferenceManager.Instance.UpdateStringPref(PrefKey.PlayerName, username.text);
         PlayerDataManager.Instance.UpdatePlayerName(username.text);
         PlayerDataManager.Instance.nameSet = true;
-        MyEventManager.Instance.UpdateUI.Dispatch();
+        MyEventManager.UpdateUI.Dispatch();
         HidePopup();
     }
 }

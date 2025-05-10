@@ -23,15 +23,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.EndGame.AddListener(OnGameEnd);
+            MyEventManager.EndGame.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.EndGame.RemoveListener(OnGameEnd);
-            }
+                MyEventManager.EndGame.RemoveListener(OnGameEnd);
         }
 
         private void Start()
@@ -117,11 +114,11 @@ namespace BallDrop
                 if (placementId == LifeRewardId)
                 {
                     ShownOnceInAGame = true;
-                    MyEventManager.Instance.OnCompletedRevivalAd.Dispatch();
+                    MyEventManager.OnCompletedRevivalAd.Dispatch();
                 }
                 if (placementId == GameRewardsId)
                 {
-                    MyEventManager.Instance.OnCompletedAwardAd.Dispatch(UnityEngine.Random.Range(5, 15));
+                    MyEventManager.OnCompletedAwardAd.Dispatch(UnityEngine.Random.Range(5, 15));
                 }
             }
             else if (showResult == ShowResult.Skipped)
@@ -138,7 +135,7 @@ namespace BallDrop
         {
             if (placementId == GameRewardsId)
             {
-                MyEventManager.Instance.OnUnityAdsReady.Dispatch();
+                MyEventManager.OnUnityAdsReady.Dispatch();
             }
         }
 

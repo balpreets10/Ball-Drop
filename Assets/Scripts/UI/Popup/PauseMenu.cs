@@ -8,20 +8,17 @@ namespace BallDrop
     {
         private void OnEnable()
         {
-            MyEventManager.Instance.PauseGame.AddListener(OnPause);
+            MyEventManager.PauseGame.AddListener(OnPause);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.PauseGame.RemoveListener(OnPause);
-            }
+                MyEventManager.PauseGame.RemoveListener(OnPause);
         }
 
         private void OnPause()
         {
-            ShowPopup();            
+            ShowPopup();
         }
 
         public override void OnPopupShown()
@@ -45,8 +42,8 @@ namespace BallDrop
         public void QuitGame()
         {
             UpdateTimeScale(1);
-            MyEventManager.Instance.EndGame.Dispatch();
-            MyEventManager.Instance.QuitGame.Dispatch();
+            MyEventManager.EndGame.Dispatch();
+            MyEventManager.QuitGame.Dispatch();
             HidePopup(true);
             MySceneManager.Instance.LoadScene(Scenes.Menu);
         }

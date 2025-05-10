@@ -25,7 +25,7 @@ public class CoinBase : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            MyEventManager.Instance.UpdateCoins.Dispatch();
+            MyEventManager.UpdateCoins.Dispatch();
             if(CoinCollectionSound != null)
                 AudioManager.Instance.PlayEffect(CoinCollectionSound);
             GameObject particles = ObjectPool.Instance.GetCoinCollectionParticles();

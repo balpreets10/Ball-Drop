@@ -31,21 +31,18 @@ namespace BallDrop.Audio
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnMusicVolumeChanged.AddListener(OnMusicVolumeChanged);
-            MyEventManager.Instance.OnEffectVolumeChanged.AddListener(OnEffectVolumeChanged);
-            MyEventManager.Instance.PauseGame.AddListener(OnGamePause);
-            MyEventManager.Instance.EndGame.AddListener(OnGameEnd);
+            MyEventManager.OnMusicVolumeChanged.AddListener(OnMusicVolumeChanged);
+            MyEventManager.OnEffectVolumeChanged.AddListener(OnEffectVolumeChanged);
+            MyEventManager.PauseGame.AddListener(OnGamePause);
+            MyEventManager.EndGame.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnMusicVolumeChanged.RemoveListener(OnMusicVolumeChanged);
-                MyEventManager.Instance.OnEffectVolumeChanged.RemoveListener(OnEffectVolumeChanged);
-                MyEventManager.Instance.PauseGame.RemoveListener(OnGamePause);
-                MyEventManager.Instance.EndGame.RemoveListener(OnGameEnd);
-            }
+                MyEventManager.OnMusicVolumeChanged.RemoveListener(OnMusicVolumeChanged);
+                MyEventManager.OnEffectVolumeChanged.RemoveListener(OnEffectVolumeChanged);
+                MyEventManager.PauseGame.RemoveListener(OnGamePause);
+                MyEventManager.EndGame.RemoveListener(OnGameEnd);
         }
 
         private void Start()

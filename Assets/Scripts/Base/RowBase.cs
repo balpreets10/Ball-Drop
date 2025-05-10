@@ -15,15 +15,12 @@ namespace BallDrop.Base
 
         private void OnEnable()
         {
-            MyEventManager.Instance.EndGame.AddListener(EndGame);
+            MyEventManager.EndGame.AddListener(EndGame);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.EndGame.RemoveListener(EndGame);
-            }
+                MyEventManager.EndGame.RemoveListener(EndGame);
         }
 
         private void OnTriggerExit(Collider other)
@@ -46,7 +43,7 @@ namespace BallDrop.Base
         public void OnPassedPlayer(bool animate)
         {
             ActivateNext();
-            MyEventManager.Instance.OnRowPassed.Dispatch();
+            MyEventManager.OnRowPassed.Dispatch();
             Deactivate(animate);
         }
 
@@ -89,7 +86,7 @@ namespace BallDrop.Base
 
         public void Deactivate(bool animate)
         {
-            MyEventManager.Instance.RemoveRow.Dispatch(this);
+            MyEventManager.RemoveRow.Dispatch(this);
             if (gameObject.activeInHierarchy)
             {
                 StartCoroutine(DeactivateChildren(animate));
@@ -136,7 +133,7 @@ namespace BallDrop.Base
 
         private void ActivateNext()
         {
-            MyEventManager.Instance.SpawnRow.Dispatch();
+            MyEventManager.SpawnRow.Dispatch();
         }
 
         public GameObject GetGameObject()

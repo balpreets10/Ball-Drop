@@ -33,7 +33,7 @@ namespace BallDrop
                 LeanTween.scale(Icon, IsOnScale, .15f).setEase(LeanTweenType.linear);
                 LeanTween.moveLocal(Icon, movePosition, .15f).setEase(LeanTweenType.linear);
                 LeanTween.scale(Text, Vector3.one, .15f).setEase(LeanTweenType.linear);
-                MyEventManager.Instance.ScrollToMenu.Dispatch(transform.GetSiblingIndex());
+                MyEventManager.ScrollToMenu.Dispatch(transform.GetSiblingIndex());
             }
             else
             {

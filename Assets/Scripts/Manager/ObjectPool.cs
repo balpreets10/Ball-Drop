@@ -10,7 +10,7 @@ namespace BallDrop
     public class ObjectPool : SingletonMonoBehaviour<ObjectPool>
     {
         public Transform PooledObjectsHolder;
-       
+
         [SerializeField]
         private GameObject Player;
         [SerializeField]
@@ -127,7 +127,7 @@ namespace BallDrop
         private List<IPowerup> VerticalBeams = new List<IPowerup>();
         private List<IPowerup> LineGuides = new List<IPowerup>();
 
-   
+
         #region Instantiation
         public IEnumerator InstantiateObjects()
         {
@@ -343,7 +343,7 @@ namespace BallDrop
                 }
 
             }
-           
+
             #region Projectile Particles
             if (ProjectilePrefab != null)
             {
@@ -376,7 +376,7 @@ namespace BallDrop
                 }
             }
 
-            #endregion Effect Text 
+            #endregion Effect Text
 
             #region Splatter Effect
 
@@ -412,7 +412,7 @@ namespace BallDrop
 
             }
 
-            #endregion Dynamic Score  
+            #endregion Dynamic Score
 
             #region Trail Image
 
@@ -516,7 +516,7 @@ namespace BallDrop
             }
             #endregion
 
-            MyEventManager.Instance.OnObjectsInstantiated.Dispatch();
+            MyEventManager.OnObjectsInstantiated.Dispatch();
         }
         #endregion
 
@@ -875,7 +875,7 @@ namespace BallDrop
             projectileParticles.Add(projectileParticle);
             return projectileParticle;
         }
-        
+
         //public IPowerup GetLineGuidePowerup()
         //{
         //    foreach (IPowerup lineGuide in LineGuides)
@@ -892,7 +892,7 @@ namespace BallDrop
         //    LineGuides.Add(guide);
         //    return guide;
         //}
-       
+
             #endregion
 
         #region Others
@@ -945,7 +945,7 @@ namespace BallDrop
                 Total += ProjectileCount;
             return Total;
         }
-        
+
         public void DeactivateLeftCubes()
         {
             Deactivate(NormalCubes);

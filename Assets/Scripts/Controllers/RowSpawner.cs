@@ -19,21 +19,18 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.SpawnRow.AddListener(SpawnRow);
-            MyEventManager.Instance.RemoveRow.AddListener(RemoveRow);
-            MyEventManager.Instance.SetPlayerPosAfterRevival.AddListener(SetBallNewPosition);
-            MyEventManager.Instance.EndGame.AddListener(EndGame);
+            MyEventManager.SpawnRow.AddListener(SpawnRow);
+            MyEventManager.RemoveRow.AddListener(RemoveRow);
+            MyEventManager.SetPlayerPosAfterRevival.AddListener(SetBallNewPosition);
+            MyEventManager.EndGame.AddListener(EndGame);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.SpawnRow.RemoveListener(SpawnRow);
-                MyEventManager.Instance.RemoveRow.RemoveListener(RemoveRow);
-                MyEventManager.Instance.SetPlayerPosAfterRevival.RemoveListener(SetBallNewPosition);
-                MyEventManager.Instance.EndGame.RemoveListener(EndGame);
-            }
+                MyEventManager.SpawnRow.RemoveListener(SpawnRow);
+                MyEventManager.RemoveRow.RemoveListener(RemoveRow);
+                MyEventManager.SetPlayerPosAfterRevival.RemoveListener(SetBallNewPosition);
+                MyEventManager.EndGame.RemoveListener(EndGame);
         }
 
         private IEnumerator Start()
@@ -71,7 +68,7 @@ namespace BallDrop
                 SpawnRow();
                 yield return WaitBetweenRowSpawn;
             }
-            MyEventManager.Instance.OnRowsSpawned.Dispatch();
+            MyEventManager.OnRowsSpawned.Dispatch();
         }
 
         public void SpawnRow()

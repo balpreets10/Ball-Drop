@@ -41,21 +41,17 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnScoreUpdated.AddListener(OnScoreChanged);
-            MyEventManager.Instance.OnRowPassed.AddListener(OnRowPassed);
-            MyEventManager.Instance.OnCoinsUpdated.AddListener(OnCoinsUpdated);
+            MyEventManager.OnScoreUpdated.AddListener(OnScoreChanged);
+            MyEventManager.OnRowPassed.AddListener(OnRowPassed);
+            MyEventManager.OnCoinsUpdated.AddListener(OnCoinsUpdated);
             ProgressSlider.wholeNumbers = false;
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnScoreUpdated.RemoveListener(OnScoreChanged);
-                MyEventManager.Instance.OnRowPassed.RemoveListener(OnRowPassed);
-                MyEventManager.Instance.OnCoinsUpdated.RemoveListener(OnCoinsUpdated);
-
-            }
+                MyEventManager.OnScoreUpdated.RemoveListener(OnScoreChanged);
+                MyEventManager.OnRowPassed.RemoveListener(OnRowPassed);
+                MyEventManager.OnCoinsUpdated.RemoveListener(OnCoinsUpdated);
         }
 
         public override void Start()
@@ -228,7 +224,7 @@ namespace BallDrop
 
         public void PauseGame()
         {
-            MyEventManager.Instance.PauseGame.Dispatch();
+            MyEventManager.PauseGame.Dispatch();
         }
 
     }

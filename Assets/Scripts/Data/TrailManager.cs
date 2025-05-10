@@ -11,18 +11,13 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.UpdateLockStatus.AddListener(OnTrailChanged);
+            MyEventManager.UpdateLockStatus.AddListener(OnTrailChanged);
 
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.UpdateLockStatus.RemoveListener(OnTrailChanged);
-
-            }
-
+                MyEventManager.UpdateLockStatus.RemoveListener(OnTrailChanged);
         }
 
         private void OnTrailChanged(int index, ItemType itemType, LockStatus lockStatus)

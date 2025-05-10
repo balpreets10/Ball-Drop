@@ -46,9 +46,9 @@ namespace BallDrop
         #region LIFE CYCLE
         private void OnEnable()
         {
-            MyEventManager.Instance.OnRowPassed.AddListener(OnRowPassed);
-            MyEventManager.Instance.QuitGame.AddListener(Reset);
-            MyEventManager.Instance.OnCancelledRevive.AddListener(OnCancelledRevive);
+            MyEventManager.OnRowPassed.AddListener(OnRowPassed);
+            MyEventManager.QuitGame.AddListener(Reset);
+            MyEventManager.OnCancelledRevive.AddListener(OnCancelledRevive);
 
             m_Rigidbody = GetComponent<Rigidbody>();
             UpdateBallColor();
@@ -57,12 +57,9 @@ namespace BallDrop
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnCancelledRevive.RemoveListener(OnCancelledRevive);
-                MyEventManager.Instance.OnRowPassed.RemoveListener(OnRowPassed);
-                MyEventManager.Instance.QuitGame.RemoveListener(Reset);
-            }
+                MyEventManager.OnCancelledRevive.RemoveListener(OnCancelledRevive);
+                MyEventManager.OnRowPassed.RemoveListener(OnRowPassed);
+                MyEventManager.QuitGame.RemoveListener(Reset);
         }
 
         private void Update()
@@ -117,7 +114,7 @@ namespace BallDrop
         {
             GameData.Instance.cameraController.EnableCollider();
             Deactivate();
-            MyEventManager.Instance.OnPlayerDeath.Dispatch();
+            MyEventManager.OnPlayerDeath.Dispatch();
         }
 
         private void UpdateBallColor()
@@ -138,7 +135,7 @@ namespace BallDrop
         private void OnSlowDownCollected(float duration)
         {
             GameData.Instance.CurrentTypes.Add(PowerupType.SlowDown);
-            MyEventManager.Instance.OnSlowDownCollected.Dispatch(duration);
+            MyEventManager.OnSlowDownCollected.Dispatch(duration);
         }
 
         private void OnShieldCollected(float duration)
@@ -147,7 +144,7 @@ namespace BallDrop
             Shield.Activate(ColorData.Instance.GetPrimaryColor());
             GameData.Instance.CurrentTypes.Add(PowerupType.Shield);
             StartCoroutine(DisableShield(duration));
-            MyEventManager.Instance.OnShieldCollected.Dispatch(duration);
+            MyEventManager.OnShieldCollected.Dispatch(duration);
         }
 
         private void OnProjectileCollected(float duration)
@@ -167,7 +164,7 @@ namespace BallDrop
 
         private void OnLineGuideCollected(float duration)
         {
-            MyEventManager.Instance.OnLineGuideCollected.Dispatch(duration);
+            MyEventManager.OnLineGuideCollected.Dispatch(duration);
         }
 
         private void MouseSwipe()
@@ -239,7 +236,7 @@ namespace BallDrop
         {
             if (!GameData.Instance.IsPlayerScaled)
             {
-                MyEventManager.Instance.OnLandedOnXCube.Dispatch(duration, ScaleFactor);
+                MyEventManager.OnLandedOnXCube.Dispatch(duration, ScaleFactor);
                 transform.localScale = GameData.Instance.initialScale * ScaleFactor;
                 GameData.Instance.IsPlayerScaled = true;
                 StartCoroutine(ReturnToNormalScale(duration));
@@ -258,7 +255,7 @@ namespace BallDrop
             {
                 IsDirectionReversed = true;
                 SwitchDirection = -1;
-                MyEventManager.Instance.OnLandedOnReverseCube.Dispatch(duration);
+                MyEventManager.OnLandedOnReverseCube.Dispatch(duration);
                 StartCoroutine(ResetMoveDirection(duration));
             }
 
@@ -286,7 +283,7 @@ namespace BallDrop
             gameObject.SetActive(true);
             tweenRotate = LeanTween.rotateAround(m_Renderer.gameObject, Vector3.one, 360, 1.5f).setLoopType(LeanTweenType.linear);
             trailCoroutine = StartCoroutine(CreateTrails());
-            MyEventManager.Instance.OnPlayerActivated.Dispatch();
+            MyEventManager.OnPlayerActivated.Dispatch();
 
         }
 

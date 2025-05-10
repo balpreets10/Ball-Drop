@@ -10,18 +10,13 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.UpdateLockStatus.AddListener(OnSplatterChanged);
+            MyEventManager.UpdateLockStatus.AddListener(OnSplatterChanged);
 
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.UpdateLockStatus.RemoveListener(OnSplatterChanged);
-
-            }
-
+                MyEventManager.UpdateLockStatus.RemoveListener(OnSplatterChanged);
         }
 
         private void OnSplatterChanged(int index, ItemType itemType, LockStatus lockStatus)

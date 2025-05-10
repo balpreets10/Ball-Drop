@@ -18,7 +18,7 @@ namespace BallDrop
             MusicVolSlider.value = PreferenceManager.Instance.GetFloatPref(PrefKey.Music, 0.05f);
             EffectsVolSlider.value = PreferenceManager.Instance.GetFloatPref(PrefKey.Effect, 0.1f);
         }
-        
+
         public void ChangeSensitivity(float value)
         {
             PreferenceManager.Instance.UpdateIntPref(PrefKey.MovementSensitivity, (int)value);
@@ -26,17 +26,17 @@ namespace BallDrop
 
         public void ChangeMusicVolume(float value)
         {
-            MyEventManager.Instance.OnMusicVolumeChanged.Dispatch(value);
+            MyEventManager.OnMusicVolumeChanged.Dispatch(value);
         }
 
         public void ChangeEffectVolume(float value)
         {
-            MyEventManager.Instance.OnEffectVolumeChanged.Dispatch(value);
+            MyEventManager.OnEffectVolumeChanged.Dispatch(value);
         }
 
         public void ChangeBackground()
         {
-            MyEventManager.Instance.ChangeTexture.Dispatch();
+            MyEventManager.ChangeTexture.Dispatch();
         }
     }
 }

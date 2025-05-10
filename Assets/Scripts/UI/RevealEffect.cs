@@ -12,19 +12,15 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.StartGame.AddListener(StartGame);
-            MyEventManager.Instance.Reveal.AddListener(Reveal);
+            MyEventManager.StartGame.AddListener(StartGame);
+            MyEventManager.Reveal.AddListener(Reveal);
             Circle.transform.localScale = Vector3.zero;
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.StartGame.RemoveListener(StartGame);
-                MyEventManager.Instance.Reveal.RemoveListener(Reveal);
-
-            }
+                MyEventManager.StartGame.RemoveListener(StartGame);
+                MyEventManager.Reveal.RemoveListener(Reveal);
         }
 
         private void Reveal()

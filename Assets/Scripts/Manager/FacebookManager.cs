@@ -16,15 +16,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.LoginWithFacebook.AddListener(Login);
+            MyEventManager.LoginWithFacebook.AddListener(Login);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.LoginWithFacebook.RemoveListener(Login);
-            }
+                MyEventManager.LoginWithFacebook.RemoveListener(Login);
         }
 
         public void InitializeFacebook()
@@ -47,13 +44,14 @@ namespace BallDrop
             }
             else
             {
+                Debug.Log("Activating Fb");
                 FB.ActivateApp();
-
             }
         }
 
         private void OnHideUnity(bool isGameShown)
         {
+            Debug.Log("Hiding Unity");
             //Debug.Log(string.Format("Success Response: OnHideUnity Called {0}\n", isGameShown));
             //Debug.Log("Is game shown: " + isGameShown);
         }
@@ -76,7 +74,8 @@ namespace BallDrop
 
         private void OnFacebookLoggedIn(ILoginResult result)
         {
-            PreferenceManager.Instance.UpdateBoolpref(PrefKey.NotFirstGameOnline, true); 
+            Debug.Log("Facebook Logged In");
+            PreferenceManager.Instance.UpdateBoolpref(PrefKey.NotFirstGameOnline, true);
             if (result == null || string.IsNullOrEmpty(result.Error))
             {
                 Debug.unityLogger.Log(GameData.TAG, "Facebook Auth Complete!");
@@ -85,17 +84,18 @@ namespace BallDrop
             else
             {
                 Debug.unityLogger.Log(GameData.TAG, "Facebook Auth Failed: " + result.Error + " --- " + result.RawResult);
-                MyEventManager.Instance.OnUserDataFetched.Dispatch(null);
+                MyEventManager.OnUserDataFetched.Dispatch(null);
             }
         }
 
         private void APICallback(IGraphResult result)
         {
+            Debug.Log("API CAllback");
             Debug.unityLogger.Log(GameData.TAG, result.RawResult);
             FBData fBData = JsonUtility.FromJson<FBData>(result.RawResult.ToString());
             fBData.accessToken = AccessToken.CurrentAccessToken;
             PreferenceManager.Instance.UpdateStringPref(PrefKey.PlayerName, fBData.name);
-            MyEventManager.Instance.OnFacebookLoginComplete.Dispatch(fBData);
+            MyEventManager.OnFacebookLoginComplete.Dispatch(fBData);
         }
 
         //public void GetFriendList()

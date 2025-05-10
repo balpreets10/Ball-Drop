@@ -18,19 +18,14 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnLandedOnXCube.AddListener(OnLandedOnXCube);
-            MyEventManager.Instance.OnLineGuideCollected.AddListener(OnLineGuideCollected);
+            MyEventManager.OnLandedOnXCube.AddListener(OnLandedOnXCube);
+            MyEventManager.OnLineGuideCollected.AddListener(OnLineGuideCollected);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnLandedOnXCube.RemoveListener(OnLandedOnXCube);
-                MyEventManager.Instance.OnLineGuideCollected.RemoveListener(OnLineGuideCollected);
-
-
-            }
+                MyEventManager.OnLandedOnXCube.RemoveListener(OnLandedOnXCube);
+                MyEventManager.OnLineGuideCollected.RemoveListener(OnLineGuideCollected);
         }
 
         private void OnLineGuideCollected(float duration)

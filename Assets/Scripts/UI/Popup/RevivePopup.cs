@@ -9,17 +9,14 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.ReviveOption.AddListener(ShowPopup);
-            MyEventManager.Instance.OnCompletedRevivalAd.AddListener(HidePopup);
+            MyEventManager.ReviveOption.AddListener(ShowPopup);
+            MyEventManager.OnCompletedRevivalAd.AddListener(HidePopup);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.ReviveOption.RemoveListener(ShowPopup);
-                MyEventManager.Instance.OnCompletedRevivalAd.RemoveListener(HidePopup);
-            }
+                MyEventManager.ReviveOption.RemoveListener(ShowPopup);
+                MyEventManager.OnCompletedRevivalAd.RemoveListener(HidePopup);
         }
 
         public override void ShowPopup()
@@ -32,7 +29,7 @@ namespace BallDrop
             base.OnPopupShown();
             Time.timeScale = 0f;
         }
-        
+
         public void WatchAd()
         {
             UnityAdManager.Instance.ShowLifeRewardVideo();
@@ -40,7 +37,7 @@ namespace BallDrop
 
         public void Cancel()
         {
-            MyEventManager.Instance.OnCancelledRevive.Dispatch();
+            MyEventManager.OnCancelledRevive.Dispatch();
             HidePopup();
         }
 

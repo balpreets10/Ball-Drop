@@ -23,23 +23,20 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnPlayerDeath.AddListener(FinishUp);
-            MyEventManager.Instance.OnLandedOnXCube.AddListener(OnLandedOnX);
-            MyEventManager.Instance.OnLandedOnReverseCube.AddListener(OnLandedOnReverseCube);
-            MyEventManager.Instance.OnShieldCollected.AddListener(OnShieldCollected);
-            MyEventManager.Instance.OnSlowDownCollected.AddListener(OnSlowDownCollected);
+            MyEventManager.OnPlayerDeath.AddListener(FinishUp);
+            MyEventManager.OnLandedOnXCube.AddListener(OnLandedOnX);
+            MyEventManager.OnLandedOnReverseCube.AddListener(OnLandedOnReverseCube);
+            MyEventManager.OnShieldCollected.AddListener(OnShieldCollected);
+            MyEventManager.OnSlowDownCollected.AddListener(OnSlowDownCollected);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnPlayerDeath.RemoveListener(FinishUp);
-                MyEventManager.Instance.OnLandedOnXCube.RemoveListener(OnLandedOnX);
-                MyEventManager.Instance.OnLandedOnReverseCube.RemoveListener(OnLandedOnReverseCube);
-                MyEventManager.Instance.OnShieldCollected.RemoveListener(OnShieldCollected);
-                MyEventManager.Instance.OnSlowDownCollected.RemoveListener(OnSlowDownCollected);
-            }
+                MyEventManager.OnPlayerDeath.RemoveListener(FinishUp);
+                MyEventManager.OnLandedOnXCube.RemoveListener(OnLandedOnX);
+                MyEventManager.OnLandedOnReverseCube.RemoveListener(OnLandedOnReverseCube);
+                MyEventManager.OnShieldCollected.RemoveListener(OnShieldCollected);
+                MyEventManager.OnSlowDownCollected.RemoveListener(OnSlowDownCollected);
         }
 
         private void FinishUp()

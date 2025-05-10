@@ -30,17 +30,14 @@ namespace BallDrop.Manager
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnUnityAdsReady.AddListener(OnUnityAdsReady);
-            MyEventManager.Instance.OnFacebookLoginComplete.AddListener(OnFacebookSDKLoginComplete);
+            MyEventManager.OnUnityAdsReady.AddListener(OnUnityAdsReady);
+            MyEventManager.OnFacebookLoginComplete.AddListener(OnFacebookSDKLoginComplete);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnUnityAdsReady.RemoveListener(OnUnityAdsReady);
-                MyEventManager.Instance.OnFacebookLoginComplete.RemoveListener(OnFacebookSDKLoginComplete);
-            }
+                MyEventManager.OnUnityAdsReady.RemoveListener(OnUnityAdsReady);
+                MyEventManager.OnFacebookLoginComplete.RemoveListener(OnFacebookSDKLoginComplete);
         }
 
         private void Start()
@@ -52,7 +49,7 @@ namespace BallDrop.Manager
         private void OnInternetAvailable()
         {
             if (PreferenceManager.Instance.GetBoolPref(PrefKey.FacebookLogin))
-                MyEventManager.Instance.LoginWithFacebook.Dispatch();
+                MyEventManager.LoginWithFacebook.Dispatch();
             else
             {
 #if UNITY_EDITOR || UNITY_ANDROID
@@ -65,7 +62,7 @@ namespace BallDrop.Manager
 
         private void OnInternetNotAvailable()
         {
-            MyEventManager.Instance.OnUserDataFetched.Dispatch(null);
+            MyEventManager.OnUserDataFetched.Dispatch(null);
         }
 
         private void OnUnityAdsReady()
@@ -75,7 +72,7 @@ namespace BallDrop.Manager
                 GetDataFromPlayfab(new List<PlayfabKeys> { PlayfabKeys.TotalSeen }, res =>
                 {
                     PlayerDataManager.Instance.UpdateTotalSeen(int.Parse(res.Data[PlayfabKeys.TotalSeen.ToString()].Value));
-                    MyEventManager.Instance.OnGameRewardAdReady.Dispatch();
+                    MyEventManager.OnGameRewardAdReady.Dispatch();
                 }, err => { });
             }
         }
@@ -150,6 +147,7 @@ namespace BallDrop.Manager
             Debug.unityLogger.Log(GameData.TAG, "fb login complete, syncining with playfab");
             if (PreferenceManager.Instance.GetBoolPref(PrefKey.FacebookLogin))
             {
+                Debug.Log("logging with facebook");
                 LoginWithFaceBook(fBData, UpdateAndGetData);
             }
             else
@@ -174,7 +172,7 @@ namespace BallDrop.Manager
                         else
                         {
                             MySceneManager.Instance.HideLoadingCanvas();
-                            MyEventManager.Instance.ShowMessage.Dispatch(GameStrings.FbErrorMessage + OnError.ErrorMessage);
+                            MyEventManager.ShowMessage.Dispatch(GameStrings.FbErrorMessage + OnError.ErrorMessage);
                         }
                     });
                 }
@@ -228,11 +226,11 @@ namespace BallDrop.Manager
             //    result =>
             //    {
             //        //Debug.Log("Got Title data - " + result.ToJson());
-            //        MyEventManager.Instance.OnPricesFetched.Dispatch(result);
+            //        MyEventManager.OnPricesFetched.Dispatch(result);
             //    },
             //    error =>
             //    {
-            //        MyEventManager.Instance.OnPricesFetched.Dispatch(null);
+            //        MyEventManager.OnPricesFetched.Dispatch(null);
             //    });
             #endregion
 
@@ -291,14 +289,14 @@ namespace BallDrop.Manager
 
                   Debug.unityLogger.Log(GameData.TAG, "Player data--- " + playerData.ToString());
 
-                  MyEventManager.Instance.OnUserDataFetched.Dispatch(playerData);
+                  MyEventManager.OnUserDataFetched.Dispatch(playerData);
                   MySceneManager.Instance.HideLoadingCanvas();
                   IsLoggedInToPlayfab = true;
                   CheckTime();
               },
               error =>
               {
-                  MyEventManager.Instance.OnUserDataFetched.Dispatch(null);
+                  MyEventManager.OnUserDataFetched.Dispatch(null);
               });
         }
         #endregion

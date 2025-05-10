@@ -21,15 +21,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnObjectsInstantiated.AddListener(OnObjectInstantiated);
+            MyEventManager.OnObjectsInstantiated.AddListener(OnObjectInstantiated);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnObjectsInstantiated.RemoveListener(OnObjectInstantiated);
-            }
+                MyEventManager.OnObjectsInstantiated.RemoveListener(OnObjectInstantiated);
         }
 
         public override void Start()
@@ -57,7 +54,7 @@ namespace BallDrop
                 percentage.text = "Welcome";
                 LeanTween.cancel(m_Renderer.gameObject);
                 m_Renderer.gameObject.SetActive(false);
-                MyEventManager.Instance.Reveal.Dispatch();
+                MyEventManager.Reveal.Dispatch();
                 GameData.Instance.levelData.Level = PreferenceManager.Instance.GetIntPref(PrefKey.PlayerLevel, 1);
                 MySceneManager.Instance.LoadScene(Scenes.Menu, false);
 

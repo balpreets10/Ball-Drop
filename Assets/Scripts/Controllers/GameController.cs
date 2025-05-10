@@ -14,8 +14,8 @@ namespace BallDrop
         private List<Vector3> Axes = new List<Vector3>();
         private void OnEnable()
         {
-            MyEventManager.Instance.OnRowsSpawned.AddListener(OnRowsSpawned);
-            MyEventManager.Instance.OnPlayerActivated.AddListener(OnPlayerActivated);
+            MyEventManager.OnRowsSpawned.AddListener(OnRowsSpawned);
+            MyEventManager.OnPlayerActivated.AddListener(OnPlayerActivated);
         }
 
         private void Start()
@@ -31,12 +31,8 @@ namespace BallDrop
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnRowsSpawned.RemoveListener(OnRowsSpawned);
-                MyEventManager.Instance.OnPlayerActivated.RemoveListener(OnPlayerActivated);
-
-            }
+                MyEventManager.OnRowsSpawned.RemoveListener(OnRowsSpawned);
+                MyEventManager.OnPlayerActivated.RemoveListener(OnPlayerActivated);
         }
 
         private void OnPlayerActivated()

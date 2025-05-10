@@ -124,23 +124,20 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.SetGameMode.AddListener(SetGameMode);
-            MyEventManager.Instance.OnSlowDownCollected.AddListener(OnSlowDown);
-            MyEventManager.Instance.OnLevelCompleted.AddListener(OnLevelCompleted);
-            MyEventManager.Instance.OnRowPassed.AddListener(OnRowPassed);
-            MyEventManager.Instance.OnPlayerDeath.AddListener(OnPlayerDeath);
+            MyEventManager.SetGameMode.AddListener(SetGameMode);
+            MyEventManager.OnSlowDownCollected.AddListener(OnSlowDown);
+            MyEventManager.OnLevelCompleted.AddListener(OnLevelCompleted);
+            MyEventManager.OnRowPassed.AddListener(OnRowPassed);
+            MyEventManager.OnPlayerDeath.AddListener(OnPlayerDeath);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.SetGameMode.RemoveListener(SetGameMode);
-                MyEventManager.Instance.OnSlowDownCollected.RemoveListener(OnSlowDown);
-                MyEventManager.Instance.OnLevelCompleted.RemoveListener(OnLevelCompleted);
-                MyEventManager.Instance.OnRowPassed.RemoveListener(OnRowPassed);
-                MyEventManager.Instance.OnPlayerDeath.RemoveListener(OnPlayerDeath);
-            }
+                MyEventManager.SetGameMode.RemoveListener(SetGameMode);
+                MyEventManager.OnSlowDownCollected.RemoveListener(OnSlowDown);
+                MyEventManager.OnLevelCompleted.RemoveListener(OnLevelCompleted);
+                MyEventManager.OnRowPassed.RemoveListener(OnRowPassed);
+                MyEventManager.OnPlayerDeath.RemoveListener(OnPlayerDeath);
         }
 
         private void Start()
@@ -260,7 +257,7 @@ namespace BallDrop
             if (levelCleared)
                 StartCoroutine(EndGameWait());
             else
-                MyEventManager.Instance.EndGame.Dispatch();
+                MyEventManager.EndGame.Dispatch();
         }
 
         private IEnumerator EndGameWait()
@@ -270,7 +267,7 @@ namespace BallDrop
             ps.SetActive(true);
 
             yield return new WaitForSeconds(2f);
-            MyEventManager.Instance.EndGame.Dispatch();
+            MyEventManager.EndGame.Dispatch();
             ps.SetActive(false);
             MySceneManager.Instance.LoadScene(Scenes.GameEnd);
         }
@@ -294,7 +291,7 @@ namespace BallDrop
             else
                 playerGameData.ConsecutiveRowsPassedCount.Add(m_Multiplier, 1);
 
-            MyEventManager.Instance.OnScoreUpdated.Dispatch(Increment);
+            MyEventManager.OnScoreUpdated.Dispatch(Increment);
 
         }
 

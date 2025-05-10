@@ -15,15 +15,12 @@ public class DeathParticleSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        MyEventManager.Instance.QuitGame.AddListener(OnQuitGame);
+        MyEventManager.QuitGame.AddListener(OnQuitGame);
     }
 
     private void OnDisable()
     {
-        if (MyEventManager.Instance != null)
-        {
-            MyEventManager.Instance.QuitGame.RemoveListener(OnQuitGame);
-        }
+            MyEventManager.QuitGame.RemoveListener(OnQuitGame);
     }
 
     private void OnQuitGame()

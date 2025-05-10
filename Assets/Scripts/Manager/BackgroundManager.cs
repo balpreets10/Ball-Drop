@@ -11,15 +11,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.ChangeTexture.AddListener(ChangeTexture);
+            MyEventManager.ChangeTexture.AddListener(ChangeTexture);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.ChangeTexture.RemoveListener(ChangeTexture);
-            }
+                MyEventManager.ChangeTexture.RemoveListener(ChangeTexture);
         }
 
         public void ChangeTexture()
@@ -27,7 +24,7 @@ namespace BallDrop
             index++;
             if (index >= textures.Count)
                 index = 0;
-            MyEventManager.Instance.OnBackgroundUpdated.Dispatch(textures[index]);
+            MyEventManager.OnBackgroundUpdated.Dispatch(textures[index]);
         }
     }
 

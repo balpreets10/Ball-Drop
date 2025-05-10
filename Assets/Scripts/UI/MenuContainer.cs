@@ -17,15 +17,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.ScrollToMenu.AddListener(GoToMenu);
+            MyEventManager.ScrollToMenu.AddListener(GoToMenu);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.ScrollToMenu.RemoveListener(GoToMenu);
-            }
+                MyEventManager.ScrollToMenu.RemoveListener(GoToMenu);
         }
 
         public override void Start()
@@ -57,11 +54,14 @@ namespace BallDrop
             }
 
             float scrollValue = index / (float)(MenuItems.Count - 1);
+            Debug.Log("Scroll Value = " + scrollValue);
             LeanTween.value(MenuScrollRect.horizontalScrollbar.value, scrollValue, 0.2f).setEase(LeanTweenType.easeInSine).setOnUpdate(OnValueChanged);
         }
 
         private void OnValueChanged(float value)
         {
+            Debug.Log("Updating Value = " + value);
+
             MenuScrollRect.horizontalScrollbar.value = value;
         }
 

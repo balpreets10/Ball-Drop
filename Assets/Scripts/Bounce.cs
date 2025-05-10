@@ -17,17 +17,14 @@ namespace BallDrop
         #region --------------------LISTENERS-------------------------
         private void OnEnable()
         {
-            MyEventManager.Instance.OnPlayerActivated.AddListener(ResetData);
-            MyEventManager.Instance.OnCompletedRevivalAd.AddListener(OnCompletedRevivalAd);
+            MyEventManager.OnPlayerActivated.AddListener(ResetData);
+            MyEventManager.OnCompletedRevivalAd.AddListener(OnCompletedRevivalAd);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnPlayerActivated.RemoveListener(ResetData);
-                MyEventManager.Instance.OnCompletedRevivalAd.RemoveListener(OnCompletedRevivalAd);
-            }
+                MyEventManager.OnPlayerActivated.RemoveListener(ResetData);
+                MyEventManager.OnCompletedRevivalAd.RemoveListener(OnCompletedRevivalAd);
         }
         #endregion
 
@@ -164,12 +161,12 @@ namespace BallDrop
             if (UnityAdManager.Instance.CheckLifeRewardReady())
             {
                 GameData.Instance.cameraController.DisableCollider();
-                MyEventManager.Instance.ReviveOption.Dispatch();
+                MyEventManager.ReviveOption.Dispatch();
             }
             else
             {
                 myPlayerBase.Deactivate();
-                MyEventManager.Instance.OnPlayerDeath.Dispatch();
+                MyEventManager.OnPlayerDeath.Dispatch();
             }
         }
 
@@ -188,12 +185,12 @@ namespace BallDrop
             {
                 GameData.Instance.cameraController.EnableCollider();
             }
-            MyEventManager.Instance.SetPlayerPosAfterRevival.Dispatch(gameObject);
+            MyEventManager.SetPlayerPosAfterRevival.Dispatch(gameObject);
         }
 
         public void LevelComplete()
         {
-            MyEventManager.Instance.OnLevelCompleted.Dispatch();
+            MyEventManager.OnLevelCompleted.Dispatch();
             myPlayerBase.Invoke("Reset", 2f);
         }
 

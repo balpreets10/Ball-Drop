@@ -22,15 +22,12 @@ namespace BallDrop
         private void OnEnable()
         {
             m_RectTransform = GetComponent<RectTransform>();
-            MyEventManager.Instance.EndGame.AddListener(Deactivate);
+            MyEventManager.EndGame.AddListener(Deactivate);
         }
 
         private void OnDisable()
         {
-            if(MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.EndGame.RemoveListener(Deactivate);
-            }
+                MyEventManager.EndGame.RemoveListener(Deactivate);
         }
 
         public void ActivateAndStartAnimation(int Increment, RectTransform parent)
@@ -47,7 +44,7 @@ namespace BallDrop
         {
             gameObject.transform.SetParent(ObjectPool.Instance.PooledObjectsHolder);
             gameObject.SetActive(false);
-            //MyEventManager.Instance.DeactivateDynamicScore.Dispatch(transform);
+            //MyEventManager.DeactivateDynamicScore.Dispatch(transform);
         }
 
         public void ActivateAndStartAnimation(Vector3 position, int Increment, RectTransform parent)

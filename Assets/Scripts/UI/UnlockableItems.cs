@@ -23,17 +23,14 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.UpdateScrollItems.AddListener(UpdateScrollItems);
-            MyEventManager.Instance.UpdateLockStatus.AddListener(SetLocked);
+            MyEventManager.UpdateScrollItems.AddListener(UpdateScrollItems);
+            MyEventManager.UpdateLockStatus.AddListener(SetLocked);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.UpdateScrollItems.RemoveListener(UpdateScrollItems);
-                MyEventManager.Instance.UpdateLockStatus.RemoveListener(SetLocked);
-            }
+                MyEventManager.UpdateScrollItems.RemoveListener(UpdateScrollItems);
+                MyEventManager.UpdateLockStatus.RemoveListener(SetLocked);
         }
 
         private void UpdateScrollItems(int index, ItemType item)

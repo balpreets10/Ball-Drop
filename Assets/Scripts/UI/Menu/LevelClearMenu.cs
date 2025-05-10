@@ -50,7 +50,7 @@ namespace BallDrop
 
         private Dictionary<CubeType, int> CubeData;
         private LevelEndData levelEndData;
-      
+
         public override void Start()
         {
             base.Start();
@@ -86,7 +86,7 @@ namespace BallDrop
         {
             PreferenceManager.Instance.IncrementIntPref(PrefKey.GamesPlayed, 0);
             StopParticleSystem();
-            MyEventManager.Instance.SetGameMode.Dispatch(GameData.Instance.gameMode);
+            MyEventManager.SetGameMode.Dispatch(GameData.Instance.gameMode);
         }
 
         public void MainMenu()

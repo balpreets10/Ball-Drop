@@ -15,13 +15,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnBackgroundUpdated.AddListener(OnBackgroundUpdated);
+            MyEventManager.OnBackgroundUpdated.AddListener(OnBackgroundUpdated);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-                MyEventManager.Instance.OnBackgroundUpdated.RemoveListener(OnBackgroundUpdated);
+                MyEventManager.OnBackgroundUpdated.RemoveListener(OnBackgroundUpdated);
         }
 
 

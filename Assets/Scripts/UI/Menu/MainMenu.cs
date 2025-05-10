@@ -37,21 +37,18 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnGameRewardAdReady.AddListener(OnGameRewardAdReady);
-            MyEventManager.Instance.OnCompletedAwardAd.AddListener(OnCompletedAwardAd);
-            MyEventManager.Instance.OnFacebookLoginComplete.AddListener(OnFacebookLoginComplete);
-            MyEventManager.Instance.UpdateUI.AddListener(UpdateUI);
+            MyEventManager.OnGameRewardAdReady.AddListener(OnGameRewardAdReady);
+            MyEventManager.OnCompletedAwardAd.AddListener(OnCompletedAwardAd);
+            MyEventManager.OnFacebookLoginComplete.AddListener(OnFacebookLoginComplete);
+            MyEventManager.UpdateUI.AddListener(UpdateUI);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnGameRewardAdReady.RemoveListener(OnGameRewardAdReady);
-                MyEventManager.Instance.OnCompletedAwardAd.RemoveListener(OnCompletedAwardAd);
-                MyEventManager.Instance.OnFacebookLoginComplete.RemoveListener(OnFacebookLoginComplete);
-                MyEventManager.Instance.UpdateUI.RemoveListener(UpdateUI);
-            }
+                MyEventManager.OnGameRewardAdReady.RemoveListener(OnGameRewardAdReady);
+                MyEventManager.OnCompletedAwardAd.RemoveListener(OnCompletedAwardAd);
+                MyEventManager.OnFacebookLoginComplete.RemoveListener(OnFacebookLoginComplete);
+                MyEventManager.UpdateUI.RemoveListener(UpdateUI);
         }
 
         private void Start()
@@ -82,7 +79,7 @@ namespace BallDrop
         public void StartGame(GameMode mode)
         {
             IncrementGamesPlayed();
-            MyEventManager.Instance.SetGameMode.Dispatch(mode);
+            MyEventManager.SetGameMode.Dispatch(mode);
         }
 
         private void UpdateUI()
@@ -301,7 +298,7 @@ namespace BallDrop
 
         public void LoginWithGoogle()
         {
-            MyEventManager.Instance.LoginWithGoogle.Dispatch();
+            MyEventManager.LoginWithGoogle.Dispatch();
         }
 
         private void ScoreCallBack(IGraphResult result)
@@ -342,11 +339,11 @@ namespace BallDrop
             }
             if (PlayfabManager.Instance.IsNewlyCreated())
             {
-                MyEventManager.Instance.GetPlayerName.Dispatch();
+                MyEventManager.GetPlayerName.Dispatch();
             }
             else if (!PlayfabManager.Instance.IsNewlyCreated() && !PreferenceManager.Instance.GetBoolPref(PrefKey.NotFirstGameOnline))
             {
-                MyEventManager.Instance.ShowMessage.Dispatch("Welcome back " + PlayerDataManager.Instance.GetPlayerName() + GameStrings.AccountRestorationMsg);
+                MyEventManager.ShowMessage.Dispatch("Welcome back " + PlayerDataManager.Instance.GetPlayerName() + GameStrings.AccountRestorationMsg);
             }
             EnableButtons();
 

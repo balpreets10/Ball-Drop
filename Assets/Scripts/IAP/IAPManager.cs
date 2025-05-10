@@ -6,7 +6,7 @@ using UnityEngine.Purchasing;
 
 public class IAPManager : MonoBehaviour
 {
-    
+
     public void GrantIGC(Product product)
     {
         //int coins = PreferenceManager.Instance.GetIntPref(PrefKey.Coins, 0);
@@ -17,6 +17,6 @@ public class IAPManager : MonoBehaviour
 
     public void OnPurchaseFailed(Product product , PurchaseFailureReason failureReason)
     {
-        MyEventManager.Instance.ShowMessage.Dispatch(GameStrings.PurchaseFailureMsg + failureReason);
+        MyEventManager.ShowMessage.Dispatch(GameStrings.PurchaseFailureMsg + failureReason);
     }
 }

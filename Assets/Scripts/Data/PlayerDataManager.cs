@@ -18,19 +18,16 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.Instance.OnUserDataFetched.AddListener(OnUserDataFetched);
-            MyEventManager.Instance.OnCoinsAwarded.AddListener(UpdateCoins);
-            MyEventManager.Instance.OnCoinsUpdated.AddListener(UpdateCoins);
+            MyEventManager.OnUserDataFetched.AddListener(OnUserDataFetched);
+            MyEventManager.OnCoinsAwarded.AddListener(UpdateCoins);
+            MyEventManager.OnCoinsUpdated.AddListener(UpdateCoins);
         }
 
         private void OnDisable()
         {
-            if (MyEventManager.Instance != null)
-            {
-                MyEventManager.Instance.OnUserDataFetched.RemoveListener(OnUserDataFetched);
-                MyEventManager.Instance.OnCoinsAwarded.RemoveListener(UpdateCoins);
-                MyEventManager.Instance.OnCoinsUpdated.RemoveListener(UpdateCoins);
-            }
+                MyEventManager.OnUserDataFetched.RemoveListener(OnUserDataFetched);
+                MyEventManager.OnCoinsAwarded.RemoveListener(UpdateCoins);
+                MyEventManager.OnCoinsUpdated.RemoveListener(UpdateCoins);
         }
 
         private void Start()
@@ -53,7 +50,7 @@ namespace BallDrop
                 playerdata = data;
                 CoinManager.Instance.RefreshCoins(data.Coins);
                 UpdatePreferences();
-                MyEventManager.Instance.UpdateUI.Dispatch();
+                MyEventManager.UpdateUI.Dispatch();
                 Debug.Log("Updated UI");
             }
 
@@ -67,7 +64,7 @@ namespace BallDrop
                 };
                 CoinManager.Instance.RefreshCoins(data.Coins);
                 UpdatePreferences();
-                MyEventManager.Instance.UpdateUI.Dispatch();
+                MyEventManager.UpdateUI.Dispatch();
             }
         }
 
