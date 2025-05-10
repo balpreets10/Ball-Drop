@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "259953573048",
+    "firebase_url": "https://ball-drop-cc917.firebaseio.com",
+    "project_id": "ball-drop-cc917",
+    "storage_bucket": "ball-drop-cc917.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259953573048:android:dd25e51e460387e7",
+        "android_client_info": {
+          "package_name": "com.gamingdronzz.balldrop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259953573048-slk01r9h1t1a2mi3ruu75054ql75ugqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gamingdronzz.balldrop",
+            "certificate_hash": "e88c49fcf79370a73c79cee11ccdc563bc56028e"
+          }
+        },
+        {
+          "client_id": "259953573048-l71ld7b7e550i306cu0fs3teni2l2p7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gamingdronzz.balldrop",
+            "certificate_hash": "9d2279437c249a6c6524fb51b1ce0e23df643c74"
+          }
+        },
+        {
+          "client_id": "259953573048-ok2vu111jbf5ksa0nc85js0n9bm28p3f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gamingdronzz.balldrop",
+            "certificate_hash": "861a00e7c5a645225b8bf470277d653f11233023"
+          }
+        },
+        {
+          "client_id": "259953573048-hernhglv6j9adpbn7jmk2svq0tuf44ok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwYX6Zx-vUHQ5oc4jED4yyJj0-xc503QE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259953573048-hernhglv6j9adpbn7jmk2svq0tuf44ok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

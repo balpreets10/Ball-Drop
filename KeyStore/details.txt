@@ -1,0 +1,44 @@
+QMr10h5IpOBySpi
+
+
+Certificate command
+===============================================================================================================
+keytool -list -v -keystore user.keystore -alias debug -storepass "QMr10h5IpOBySpi" -keypass "QMr10h5IpOBySpi"
+===============================================================================================================
+
+Alias name: debug
+Creation date: Jun 11, 2019
+Entry type: PrivateKeyEntry
+Certificate chain length: 1
+Certificate[1]:
+Owner: C=IN, ST=Jammu and Kashmir, L=Jammu, O=Gaming Dronzz, OU=Games, CN=Balpreet Singh
+Issuer: C=IN, ST=Jammu and Kashmir, L=Jammu, O=Gaming Dronzz, OU=Games, CN=Balpreet Singh
+Serial number: 6bdee42
+Valid from: Tue Jun 11 13:11:29 IST 2019 until: Wed May 29 13:11:29 IST 2069
+Certificate fingerprints:
+         MD5:  17:86:77:E7:00:DB:41:4F:EE:70:A5:DB:04:5A:D5:22
+         SHA1: E8:8C:49:FC:F7:93:70:A7:3C:79:CE:E1:1C:CD:C5:63:BC:56:02:8E
+         SHA256: 01:28:C4:74:A9:B8:49:22:44:D3:A0:EA:EE:78:9B:0E:9B:5B:CC:E8:9C:20:BF:14:DF:CD:F5:5E:89:61:75:69
+         Signature algorithm name: SHA1withRSA
+         Version: 3
+
+Google API Client ID
+259953573048-slk01r9h1t1a2mi3ruu75054ql75ugqo.apps.googleusercontent.com
+
+
+Facebook Keyhash Command
+===============================================================================================================
+keytool -exportcert -alias debug -keystore user.keystore | openssl sha1 -binary | openssl base64
+===============================================================================================================
+
+
+
+
+SHA1 : 9D:22:79:43:7C:24:9A:6C:65:24:FB:51:B1:CE:0E:23:DF:64:3C:74
+259953573048-l71ld7b7e550i306cu0fs3teni2l2p7o.apps.googleusercontent.com 
+
+SHA1 : 86:1A:00:E7:C5:A6:45:22:5B:8B:F4:70:27:7D:65:3F:11:23:30:23
+259953573048-ok2vu111jbf5ksa0nc85js0n9bm28p3f.apps.googleusercontent.com
+
+Web Client ID
+259953573048-j1iacotocb8tdhh97sn64glmvv1pnnin.apps.googleusercontent.com
