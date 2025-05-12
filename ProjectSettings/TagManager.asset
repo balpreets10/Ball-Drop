@@ -10,6 +10,12 @@ TagManager:
   - Normal
   - Enemy
   - Faded
+  - Invisible
+  - Landing
+  - Reverse
+  - Moving
+  - X
+  - Spike
   layers:
   - Default
   - TransparentFX

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 114290037750588376}
   m_Layer: 8
   m_Name: CubeFaded
-  m_TagString: Normal
+  m_TagString: Faded
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

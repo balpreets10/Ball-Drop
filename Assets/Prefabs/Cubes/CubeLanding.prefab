@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 114794239720628266}
   m_Layer: 8
   m_Name: CubeLanding
-  m_TagString: Landing
+  m_TagString: Undefined
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
