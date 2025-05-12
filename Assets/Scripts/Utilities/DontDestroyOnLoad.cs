@@ -1,12 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-namespace BallDrop
+namespace Utilities
 {
     public class DontDestroyOnLoad : MonoBehaviour
     {
-        // Use this for initialization
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
+
         private void Start()
         {
             DontDestroyOnLoad(this);

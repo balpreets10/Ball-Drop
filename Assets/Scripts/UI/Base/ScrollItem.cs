@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace BallDrop
 {
-    public class ScrollItem : MonoBehaviour
+    public class ScrollItem : UIComponent
     {
         public Toggle MyToggle;
 
@@ -16,7 +16,6 @@ namespace BallDrop
 
         public virtual void HideItem()
         {
-
         }
     }
 }

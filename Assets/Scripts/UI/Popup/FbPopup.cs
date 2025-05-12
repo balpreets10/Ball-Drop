@@ -23,7 +23,7 @@ public class FbPopup : Popup
 
     private void OnAvailable()
     {
-        MyEventManager.LoginWithFacebook.Dispatch();
+        MyEventManager.Menu.LoginWithFacebook.Dispatch();
     }
 
     private void OnUnavailable()
@@ -31,5 +31,4 @@ public class FbPopup : Popup
         MySceneManager.Instance.HideLoadingCanvas();
         MyEventManager.ShowMessage.Dispatch(GameStrings.InternetUnavailableMsg);
     }
-
 }

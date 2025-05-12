@@ -6,26 +6,27 @@ using System;
 
 namespace BallDrop
 {
-    public class PreviousTryPanel : MonoBehaviour
+    public class PreviousTryPanel : UIComponent
     {
         public TextMeshProUGUI ScoreText;
         public TextMeshProUGUI BestText;
         public RectTransform mRectTransform;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             mRectTransform = GetComponent<RectTransform>();
             //LeanTween.moveLocalX(gameObject, Screen.width + mRectTransform.sizeDelta.x, 0f);
         }
 
         private void OnEnable()
         {
-            MyEventManager.OnPlayerActivated.AddListener(OnPlayerActivated);
+            MyEventManager.Game.OnPlayerActivated.AddListener(OnPlayerActivated);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnPlayerActivated.RemoveListener(OnPlayerActivated);
+            MyEventManager.Game.OnPlayerActivated.RemoveListener(OnPlayerActivated);
         }
 
         private void OnPlayerActivated()
@@ -39,8 +40,9 @@ namespace BallDrop
             }
         }
 
-        private void Activate()
+        public override void Activate()
         {
+            base.Activate();
             ScoreText.text = "0";
             BestText.text = "0";
             float pos = 480;

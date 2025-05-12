@@ -3,11 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Advertisements;
+//using UnityEngine.Advertisements;
 
 namespace BallDrop
 {
-    public class UnityAdManager : SingletonMonoBehaviour<UnityAdManager>// IUnityAdsListener
+    public class UnityAdManager : SingletonMonoBehaviour<UnityAdManager>//, IUnityAdsListener
     {
         private readonly string gameId = "3173825";
         private readonly string bannerPlacementId = "BannerPromotions";
@@ -23,35 +23,34 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.EndGame.AddListener(OnGameEnd);
+            MyEventManager.Game.EndGame.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-                MyEventManager.EndGame.RemoveListener(OnGameEnd);
+            MyEventManager.Game.EndGame.RemoveListener(OnGameEnd);
         }
 
         private void Start()
         {
             //Advertisement.AddListener(this);
-            Advertisement.Initialize(gameId, testMode);
+            //Advertisement.Initialize(gameId, testMode);
         }
 
-        public void ShowBanner(BannerPosition position)
-        {
-            StartCoroutine(ShowBannerWhenReady(position));
-        }
+        // public void ShowBanner(BannerPosition position)
+        // {
+        //     StartCoroutine(ShowBannerWhenReady(position));
+        // }
 
-        private IEnumerator ShowBannerWhenReady(BannerPosition position)
-        {
-            // while (!Advertisement.IsReady(bannerPlacementId))
-            // {
-            //     yield return new WaitForSeconds(0.5f);
-            // }
-            // Advertisement.Banner.SetPosition(position);
-            // Advertisement.Banner.Show(bannerPlacementId);
-            yield return null;
-        }
+        // private IEnumerator ShowBannerWhenReady(BannerPosition position)
+        // {
+        //     while (!Advertisement.IsReady(bannerPlacementId))
+        //     {
+        //         yield return new WaitForSeconds(0.5f);
+        //     }
+        //     Advertisement.Banner.SetPosition(position);
+        //     Advertisement.Banner.Show(bannerPlacementId);
+        // }
 
         public void ShowInterstitial()
         {
@@ -60,36 +59,33 @@ namespace BallDrop
 
         public void ShowGameRewardVideo()
         {
-            Advertisement.Show(GameRewardsId);
+            //Advertisement.Show(GameRewardsId);
         }
 
         public void ShowLifeRewardVideo()
         {
-            Advertisement.Show(LifeRewardId);
+            //Advertisement.Show(LifeRewardId);
         }
 
         public bool CheckGameRewardReady()
         {
-            return false;
-            //return (Advertisement.IsReady(GameRewardsId) && PlayerDataManager.Instance.GetTotalAdsSeen() < MaxPerDay);
+            return false;//(Advertisement.IsReady(GameRewardsId) && PlayerDataManager.Instance.GetTotalAdsSeen() < MaxPerDay);
         }
 
         public bool CheckLifeRewardReady()
         {
-            return false;
-            //return (Advertisement.IsReady(LifeRewardId) && !ShownOnceInAGame && PlayerDataManager.Instance.GetTotalAdsSeen() < MaxPerDay);
+            return false;//(Advertisement.IsReady(LifeRewardId) && !ShownOnceInAGame && PlayerDataManager.Instance.GetTotalAdsSeen() < MaxPerDay);
         }
 
         public bool CheckInterstitialReady()
         {
-            return false;
-            //return Advertisement.IsReady("video");
+            return false;//Advertisement.IsReady("video");
         }
 
         public void HideBanner()
         {
-            if (Advertisement.Banner.isLoaded)
-                Advertisement.Banner.Hide();
+            // if (Advertisement.Banner.isLoaded)
+            //     Advertisement.Banner.Hide();
         }
 
         private void OnGameEnd()
@@ -106,30 +102,30 @@ namespace BallDrop
         }
 
         //-----------------------------CALLBACKS--------------------------------------
-        public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
-        {
-            if (showResult == ShowResult.Finished)
-            {
-                PlayfabManager.Instance.UpdateTotalSeen();
-                if (placementId == LifeRewardId)
-                {
-                    ShownOnceInAGame = true;
-                    MyEventManager.OnCompletedRevivalAd.Dispatch();
-                }
-                if (placementId == GameRewardsId)
-                {
-                    MyEventManager.OnCompletedAwardAd.Dispatch(UnityEngine.Random.Range(5, 15));
-                }
-            }
-            else if (showResult == ShowResult.Skipped)
-            {
-                Debug.Log("User Skipped Ad");
-            }
-            else if (showResult == ShowResult.Failed)
-            {
-                Debug.Log("The ad did not finish due to an error");
-            }
-        }
+        // public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+        // {
+        //     if (showResult == ShowResult.Finished)
+        //     {
+        //         PlayfabManager.Instance.UpdateTotalSeen();
+        //         if (placementId == LifeRewardId)
+        //         {
+        //             ShownOnceInAGame = true;
+        //             MyEventManager.OnCompletedRevivalAd.Dispatch();
+        //         }
+        //         if (placementId == GameRewardsId)
+        //         {
+        //             MyEventManager.OnCompletedAwardAd.Dispatch(UnityEngine.Random.Range(5, 15));
+        //         }
+        //     }
+        //     else if (showResult == ShowResult.Skipped)
+        //     {
+        //         Debug.Log("User Skipped Ad");
+        //     }
+        //     else if (showResult == ShowResult.Failed)
+        //     {
+        //         Debug.Log("The ad did not finish due to an error");
+        //     }
+        // }
 
         public void OnUnityAdsReady(string placementId)
         {

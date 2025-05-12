@@ -2,8 +2,7 @@
 
 namespace BallDrop
 {
-
-    public class UnlockableItems : MonoBehaviour
+    public class UnlockableItems : UIComponent
     {
         public GameObject SelectionIcon, LockIcon, UnlockedIcon;
         public GameObject IconPanel;
@@ -14,8 +13,9 @@ namespace BallDrop
 
         private Vector2 highlightPosition = new Vector2(0, 20), nonHighlightPosition = new Vector2(0, -50);
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             LockIcon.SetActive(false);
             SelectionIcon.SetActive(false);
             UnlockedIcon.SetActive(false);
@@ -29,8 +29,8 @@ namespace BallDrop
 
         private void OnDisable()
         {
-                MyEventManager.UpdateScrollItems.RemoveListener(UpdateScrollItems);
-                MyEventManager.UpdateLockStatus.RemoveListener(SetLocked);
+            MyEventManager.UpdateScrollItems.RemoveListener(UpdateScrollItems);
+            MyEventManager.UpdateLockStatus.RemoveListener(SetLocked);
         }
 
         private void UpdateScrollItems(int index, ItemType item)
@@ -48,7 +48,6 @@ namespace BallDrop
         private void SetIconPosition(object position)
         {
             IconPanel.GetComponent<RectTransform>().anchoredPosition = (Vector2)(position);
-
         }
 
         public void SetLocked(int index, ItemType item, LockStatus lockStatus)
@@ -69,12 +68,14 @@ namespace BallDrop
                     SelectionIcon.SetActive(false);
                     transform.GetChild(1).GetComponent<CanvasGroup>().alpha = 0.4f;
                     break;
+
                 case LockStatus.Unlocked:
                     LockIcon.SetActive(false);
                     UnlockedIcon.SetActive(true);
                     SelectionIcon.SetActive(false);
                     transform.GetChild(1).GetComponent<CanvasGroup>().alpha = 1f;
                     break;
+
                 case LockStatus.Selected:
                     LockIcon.SetActive(false);
                     UnlockedIcon.SetActive(false);

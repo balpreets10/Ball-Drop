@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace BallDrop
 {
-    public class BackgroundsController : MonoBehaviour
+    public class BackgroundsController : UIComponent
     {
         [SerializeField]
         private MeshRenderer Background;
@@ -20,20 +20,11 @@ namespace BallDrop
 
         private void OnDisable()
         {
-                MyEventManager.OnBackgroundUpdated.RemoveListener(OnBackgroundUpdated);
+            MyEventManager.OnBackgroundUpdated.RemoveListener(OnBackgroundUpdated);
         }
-
-
-        //private void OnBackgroundUpdated(Texture sprite)
-        //{
-        //    if (GetComponent<Canvas>().worldCamera == null)
-        //        GetComponent<Canvas>().worldCamera = GetComponentInChildren<Camera>();
-        //    Background.color = color[UnityEngine.Random.Range(0, color.Count)];
-        //}
 
         private void OnBackgroundUpdated(Texture sprite)
         {
-
             Background.material.SetTexture("_MainTex", sprite);
         }
     }

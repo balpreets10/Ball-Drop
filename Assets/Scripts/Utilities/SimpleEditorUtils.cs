@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 public static class SimpleEditorUtils
 {
     const string playFromFirstMenuStr = "Utilities/Always Start From Scene 0 &p";
@@ -58,4 +58,4 @@ public static class SimpleEditorUtils
     }
 }
 
-#endif
+//#endif

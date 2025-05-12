@@ -1,22 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace BallDrop
 {
-    public class SplatterManager : MonoBehaviour
+    public class SplatterManager : BaseBehaviour
     {
         public List<BaseSplatter> Splatters;
         public int index;
 
-        private void OnEnable()
+        public void OnEnable()
         {
             MyEventManager.UpdateLockStatus.AddListener(OnSplatterChanged);
-
         }
 
-        private void OnDisable()
+        public void OnDisable()
         {
-                MyEventManager.UpdateLockStatus.RemoveListener(OnSplatterChanged);
+            MyEventManager.UpdateLockStatus.RemoveListener(OnSplatterChanged);
         }
 
         private void OnSplatterChanged(int index, ItemType itemType, LockStatus lockStatus)

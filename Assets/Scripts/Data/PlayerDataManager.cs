@@ -12,9 +12,11 @@ namespace BallDrop
         public bool nameSet = false;
 
         #region To be used later
+
         //public TrailCost TrailCostList;
         //public SplatterCost SplatterCostList;
-        #endregion
+
+        #endregion To be used later
 
         private void OnEnable()
         {
@@ -25,9 +27,9 @@ namespace BallDrop
 
         private void OnDisable()
         {
-                MyEventManager.OnUserDataFetched.RemoveListener(OnUserDataFetched);
-                MyEventManager.OnCoinsAwarded.RemoveListener(UpdateCoins);
-                MyEventManager.OnCoinsUpdated.RemoveListener(UpdateCoins);
+            MyEventManager.OnUserDataFetched.RemoveListener(OnUserDataFetched);
+            MyEventManager.OnCoinsAwarded.RemoveListener(UpdateCoins);
+            MyEventManager.OnCoinsUpdated.RemoveListener(UpdateCoins);
         }
 
         private void Start()
@@ -48,20 +50,6 @@ namespace BallDrop
             if (data != null)
             {
                 playerdata = data;
-                CoinManager.Instance.RefreshCoins(data.Coins);
-                UpdatePreferences();
-                MyEventManager.UpdateUI.Dispatch();
-                Debug.Log("Updated UI");
-            }
-
-            if (data == null)
-            {
-                playerdata = new PlayerData()
-                {
-                    Name = "Unknown",
-                    Coins = 0,
-                    CurrentLevel = 1,
-                };
                 CoinManager.Instance.RefreshCoins(data.Coins);
                 UpdatePreferences();
                 MyEventManager.UpdateUI.Dispatch();
@@ -192,6 +180,7 @@ namespace BallDrop
     }
 
     #region Future Updates
+
     //[Serializable]
     //public class TrailCost
     //{
@@ -243,7 +232,6 @@ namespace BallDrop
     //        }
     //    }
     //}
-    #endregion
 
-
+    #endregion Future Updates
 }

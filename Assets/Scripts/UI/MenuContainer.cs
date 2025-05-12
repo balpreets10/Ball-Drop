@@ -9,6 +9,7 @@ namespace BallDrop
     public class MenuContainer : PrimaryMenu
     {
         public ScrollRect MenuScrollRect;
+
         [SerializeField]
         private CanvasGroup mCanvasGroup;
 
@@ -17,12 +18,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.ScrollToMenu.AddListener(GoToMenu);
+            MyEventManager.Menu.ScrollToMenu.AddListener(GoToMenu);
         }
 
         private void OnDisable()
         {
-                MyEventManager.ScrollToMenu.RemoveListener(GoToMenu);
+            MyEventManager.Menu.ScrollToMenu.RemoveListener(GoToMenu);
         }
 
         public override void Start()
@@ -46,22 +47,19 @@ namespace BallDrop
             }
             if (index == 2 || index == 0)
             {
-                UnityAdManager.Instance.ShowBanner(UnityEngine.Advertisements.BannerPosition.TOP_CENTER);
+                //UnityAdManager.Instance.ShowBanner(UnityEngine.Advertisements.BannerPosition.TOP_CENTER);
             }
             else
             {
-                UnityAdManager.Instance.HideBanner();
+                //UnityAdManager.Instance.HideBanner();
             }
 
             float scrollValue = index / (float)(MenuItems.Count - 1);
-            Debug.Log("Scroll Value = " + scrollValue);
             LeanTween.value(MenuScrollRect.horizontalScrollbar.value, scrollValue, 0.2f).setEase(LeanTweenType.easeInSine).setOnUpdate(OnValueChanged);
         }
 
         private void OnValueChanged(float value)
         {
-            Debug.Log("Updating Value = " + value);
-
             MenuScrollRect.horizontalScrollbar.value = value;
         }
 
@@ -73,6 +71,5 @@ namespace BallDrop
                 MenuItems.Add(MenuScrollRect.content.GetChild(i).GetComponent<ScrollItem>());
             }
         }
-
     }
 }

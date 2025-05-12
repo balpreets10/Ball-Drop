@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using GoogleMobileAds.Api;
+//using GoogleMobileAds.Api;
 using System;
 
 namespace BallDrop
 {
     public class GoogleAdManager : SingletonMonoBehaviour<GoogleAdManager>
     {
-        private RewardBasedVideoAd rewardBasedVideo;
+        /*private RewardBasedVideoAd rewardBasedVideo;
         private BannerView bannerView;
         private InterstitialAd interstitial;
 
@@ -49,7 +49,7 @@ namespace BallDrop
 
         /*-------------------------------------------BANNER REQUEST AND  CALLBACKS---------------------------------------------------------*/
 
-        #region Banner Ad Requests and Callbacks
+       /* #region Banner Ad Requests and Callbacks
 
         public void RequestBanner()
         {
@@ -112,7 +112,7 @@ namespace BallDrop
 
         /*-------------------------------------------INTERSTITIAL AD REQUEST AND  CALLBACKS---------------------------------------------------------*/
 
-        #region Interstitial Requests and Callbacks
+        /*#region Interstitial Requests and Callbacks
 
         public void RequestInterstitial()
         {
@@ -186,7 +186,7 @@ namespace BallDrop
 
         /*-------------------------------------------REWARD BASED AD REQUEST AND  CALLBACKS---------------------------------------------------------*/
 
-        #region Reward Requests and Callbacks
+        /*#region Reward Requests and Callbacks
 
         public void RequestRewardBasedVideo()
         {
@@ -249,5 +249,6 @@ namespace BallDrop
         }
 
         #endregion Reward Requests and Callbacks
+        */
     }
 }

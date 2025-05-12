@@ -12,8 +12,9 @@ namespace BallDrop
         private Material material;
         private Vector3 initialScale = new Vector3(1, 0.3f, 1);
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             material = m_Renderer.sharedMaterial;
         }
 

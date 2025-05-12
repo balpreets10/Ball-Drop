@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace BallDrop
 {
     public class UICanvas : MonoBehaviour
@@ -10,7 +11,8 @@ namespace BallDrop
     {
         public Canvas canvas;
         public GraphicRaycaster graphicRaycaster;
-        void Awake()
+
+        private void Awake()
         {
             canvas = GetComponent<Canvas>();
             graphicRaycaster = GetComponent<GraphicRaycaster>();
@@ -20,14 +22,14 @@ namespace BallDrop
 
         private void OnEnable()
         {
-           // MyEventManager.ShowMenu.AddListener(ShowMenu);
-            //MyEventManager.EndGame.AddListener(OnGameEnd);
+            // MyEventManager.Instance.ShowMenu.AddListener(ShowMenu);
+            //MyEventManager.Instance.EndGame.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-               // MyEventManager.ShowMenu.RemoveListener(ShowMenu);
-                // MyEventManager.EndGame.RemoveListener(OnGameEnd);
+            // MyEventManager.Instance.ShowMenu.RemoveListener(ShowMenu);
+            // MyEventManager.Instance.EndGame.RemoveListener(OnGameEnd);
         }
 
         private void OnGameEnd()
@@ -47,13 +49,10 @@ namespace BallDrop
         //    }
         //}
 
-        IEnumerator EnableCanvas(bool enable, float delay)
+        private IEnumerator EnableCanvas(bool enable, float delay)
         {
             yield return new WaitForSeconds(delay + 0.2f);
             canvas.enabled = graphicRaycaster.enabled = enable;
         }
-
-
-
     }
 }

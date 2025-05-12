@@ -64,15 +64,14 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.OnRowsSpawned.AddListener(StartGame);
-            MyEventManager.OnLevelCompleted.AddListener(CenterLandingRow);
+            MyEventManager.Game.Rows.OnRowsSpawned.AddListener(StartGame);
+            MyEventManager.Game.OnLevelCompleted.AddListener(CenterLandingRow);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnRowsSpawned.RemoveListener(StartGame);
-                MyEventManager.OnLevelCompleted.RemoveListener(CenterLandingRow);
-
+            MyEventManager.Game.Rows.OnRowsSpawned.RemoveListener(StartGame);
+            MyEventManager.Game.OnLevelCompleted.RemoveListener(CenterLandingRow);
         }
 
         private void StartGame()

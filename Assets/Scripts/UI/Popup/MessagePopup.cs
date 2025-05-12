@@ -12,12 +12,11 @@ public class MessagePopup : Popup
     private void OnEnable()
     {
         MyEventManager.ShowMessage.AddListener(ShowMessage);
-
     }
 
     private void OnDisable()
     {
-            MyEventManager.ShowMessage.RemoveListener(ShowMessage);
+        MyEventManager.ShowMessage.RemoveListener(ShowMessage);
     }
 
     public void Start()

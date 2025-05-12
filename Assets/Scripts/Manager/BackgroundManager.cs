@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+
 namespace BallDrop
 {
     public class BackgroundManager : SingletonMonoBehaviour<BackgroundManager>
@@ -11,12 +12,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.ChangeTexture.AddListener(ChangeTexture);
+            MyEventManager.Menu.ChangeTexture.AddListener(ChangeTexture);
         }
 
         private void OnDisable()
         {
-                MyEventManager.ChangeTexture.RemoveListener(ChangeTexture);
+            MyEventManager.Menu.ChangeTexture.RemoveListener(ChangeTexture);
         }
 
         public void ChangeTexture()
@@ -27,5 +28,4 @@ namespace BallDrop
             MyEventManager.OnBackgroundUpdated.Dispatch(textures[index]);
         }
     }
-
 }

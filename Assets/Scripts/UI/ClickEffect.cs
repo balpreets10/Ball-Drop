@@ -4,30 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClickEffect : MonoBehaviour
+namespace BallDrop
 {
-    private bool IsTweening = false;
-    private Button mButton;
-    
-    private void Start()
+    public class ClickEffect : UIComponent
     {
-        mButton = GetComponent<Button>();
-        mButton.onClick.AddListener(OnClickEffect);
-    }
+        private bool IsTweening = false;
+        private Button mButton;
 
-    public void OnClickEffect()
-    {
-        if (!IsTweening)
+        protected override void Start()
         {
-            LeanTween.cancel(gameObject);
-            IsTweening = true;
-            transform.localScale = Vector3.one;
-            LeanTween.scale(gameObject, Vector3.one * 0.9f, .05f).setLoopPingPong(1).setEase(LeanTweenType.easeOutQuad).setOnComplete(OnTweenComplete);
+            base.Start();
+            mButton = GetComponent<Button>();
+            mButton.onClick.AddListener(OnClickEffect);
         }
-    }
 
-    private void OnTweenComplete()
-    {
-        IsTweening = false;
+        public void OnClickEffect()
+        {
+            if (!IsTweening)
+            {
+                LeanTween.cancel(gameObject);
+                IsTweening = true;
+                transform.localScale = Vector3.one;
+                LeanTween.scale(gameObject, Vector3.one * 0.9f, .05f).setLoopPingPong(1).setEase(LeanTweenType.easeOutQuad).setOnComplete(OnTweenComplete);
+            }
+        }
+
+        private void OnTweenComplete()
+        {
+            IsTweening = false;
+        }
     }
 }

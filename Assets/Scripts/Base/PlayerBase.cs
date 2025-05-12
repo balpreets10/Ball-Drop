@@ -10,22 +10,24 @@ namespace BallDrop
     public class PlayerBase : MonoBehaviour, IPlayer
     {
         private LTDescr tweenRotate, tweenStrip;
+
         private enum ChangeDirection
         {
             Positive,
             Negative
         }
 
-        public MeshRenderer m_Renderer;
-        private Rigidbody m_Rigidbody;
-        public PlayerShield Shield;
-        public bool IsShieldActive = false;
-        public bool TriggeredOnce = false;
-        IPowerup currentPowerup = null;
+        [SerializeField] protected MeshRenderer m_Renderer;
+        protected Rigidbody m_Rigidbody;
+        [SerializeField] protected PlayerShield Shield;
+        [SerializeField] protected bool isShieldActive = false;
+        [SerializeField] public bool TriggeredOnce = false;
+        private IPowerup currentPowerup = null;
         private WaitForSeconds delay = new WaitForSeconds(0.035f);
 
         //Swipe
         private Vector2 m_FirstPressPos, m_SecondPressPos;
+
         private Vector2 m_CurrentSwipe;
         private Vector3 m_MoveDirection = new Vector3(0, 0, 1);
         private int SwitchDirection = 1;
@@ -33,33 +35,43 @@ namespace BallDrop
 
         //Trail
         private Vector3 trailPosition;
+
         private readonly float m_MaxTrailStartWidth = .665f;
         private readonly float m_MinTrailStartWidth = .55f;
+
         [SerializeField]
         private readonly float m_MaxTrailStartWidthScaled;
+
         [SerializeField]
         private readonly float m_MinTrailStartWidthScaled;
+
         private float ScaleFactor = 1.5f;
-        Coroutine trailCoroutine = null;
+        private Coroutine trailCoroutine = null;
         private TrailScaleData scaleData;
 
         #region LIFE CYCLE
+
+        private void Start()
+        {
+            if (m_Rigidbody == null)
+                m_Rigidbody = GetComponent<Rigidbody>();
+        }
+
         private void OnEnable()
         {
-            MyEventManager.OnRowPassed.AddListener(OnRowPassed);
+            MyEventManager.Game.Rows.OnRowPassed.AddListener(OnRowPassed);
             MyEventManager.QuitGame.AddListener(Reset);
             MyEventManager.OnCancelledRevive.AddListener(OnCancelledRevive);
 
-            m_Rigidbody = GetComponent<Rigidbody>();
             UpdateBallColor();
             SwitchDirection = 1;
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnCancelledRevive.RemoveListener(OnCancelledRevive);
-                MyEventManager.OnRowPassed.RemoveListener(OnRowPassed);
-                MyEventManager.QuitGame.RemoveListener(Reset);
+            MyEventManager.OnCancelledRevive.RemoveListener(OnCancelledRevive);
+            MyEventManager.Game.Rows.OnRowPassed.RemoveListener(OnRowPassed);
+            MyEventManager.QuitGame.RemoveListener(Reset);
         }
 
         private void Update()
@@ -72,24 +84,29 @@ namespace BallDrop
                 MouseSwipe();
             }
         }
-        #endregion
+
+        #endregion LIFE CYCLE
 
         #region TRIGGER
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag(GameStrings.PowerUp))
             {
                 currentPowerup = other.gameObject.GetComponent<IPowerup>();
-                currentPowerup.PlayPowerupSound();
-                if (currentPowerup.GetPowerupType() == PowerupType.SlowDown)
-                    OnSlowDownCollected(currentPowerup.GetPowerupDuration());
-                else if (currentPowerup.GetPowerupType() == PowerupType.Shield)
-                    OnShieldCollected(currentPowerup.GetPowerupDuration());
-                else if (currentPowerup.GetPowerupType() == PowerupType.VerticalBeam)
-                    OnProjectileCollected(currentPowerup.GetPowerupDuration());
+                if (currentPowerup != null)
+                {
+                    currentPowerup.PlayPowerupSound();
+                    if (currentPowerup.GetPowerupType() == PowerupType.SlowDown)
+                        OnSlowDownCollected(currentPowerup.GetPowerupDuration());
+                    else if (currentPowerup.GetPowerupType() == PowerupType.Shield)
+                        OnShieldCollected(currentPowerup.GetPowerupDuration());
+                    else if (currentPowerup.GetPowerupType() == PowerupType.VerticalBeam)
+                        OnProjectileCollected(currentPowerup.GetPowerupDuration());
 
-                currentPowerup.Deactivate();
-                currentPowerup = null;
+                    currentPowerup.Deactivate();
+                    currentPowerup = null;
+                }
             }
         }
 
@@ -102,19 +119,21 @@ namespace BallDrop
                     if (!TriggeredOnce)
                     {
                         TriggeredOnce = true;
-                        GetComponent<Bounce>().ReviveOnce();
+                        Bounce bounce = GetComponent<Bounce>();
+                        if (bounce != null)
+                            bounce.ReviveOnce();
                     }
                 }
             }
         }
 
-        #endregion
+        #endregion TRIGGER
 
         private void OnCancelledRevive()
         {
             GameData.Instance.cameraController.EnableCollider();
             Deactivate();
-            MyEventManager.OnPlayerDeath.Dispatch();
+            MyEventManager.Game.OnPlayerDeath.Dispatch();
         }
 
         private void UpdateBallColor()
@@ -131,20 +150,34 @@ namespace BallDrop
                 UpdateStripHeight(GameData.Instance.levelData.GetLevelProgress() / 2);
         }
 
-
         private void OnSlowDownCollected(float duration)
         {
             GameData.Instance.CurrentTypes.Add(PowerupType.SlowDown);
-            MyEventManager.OnSlowDownCollected.Dispatch(duration);
+            MyEventManager.Game.Powerups.OnSlowDownCollected.Dispatch(duration);
         }
 
         private void OnShieldCollected(float duration)
         {
-            IsShieldActive = true;
-            Shield.Activate(ColorData.Instance.GetPrimaryColor());
+            isShieldActive = true;
+            ToggleShield(true, ColorData.Instance.GetPrimaryColor());
             GameData.Instance.CurrentTypes.Add(PowerupType.Shield);
             StartCoroutine(DisableShield(duration));
-            MyEventManager.OnShieldCollected.Dispatch(duration);
+            MyEventManager.Game.Powerups.OnShieldCollected.Dispatch(duration);
+        }
+
+        private void ToggleShield(bool toggle, Color color)
+        {
+            if (Shield != null)
+            {
+                if (toggle)
+                {
+                    Shield.Activate(color);
+                }
+                else
+                {
+                    Shield.Deactivate();
+                }
+            }
         }
 
         private void OnProjectileCollected(float duration)
@@ -162,9 +195,27 @@ namespace BallDrop
             }
         }
 
+        public Vector3 GetCurrentPosition()
+        {
+            if (m_Renderer != null)
+                return m_Renderer.transform.position;
+            else
+                return Vector3.zero;
+        }
+
         private void OnLineGuideCollected(float duration)
         {
-            MyEventManager.OnLineGuideCollected.Dispatch(duration);
+            MyEventManager.Game.Powerups.OnLineGuideCollected.Dispatch(duration);
+        }
+
+        public bool IsShieldActive()
+        {
+            return isShieldActive;
+        }
+
+        public bool IsTriggeredOnce()
+        {
+            return TriggeredOnce;
         }
 
         private void MouseSwipe()
@@ -213,11 +264,11 @@ namespace BallDrop
             m_CurrentSwipe.Normalize();
             if (m_CurrentSwipe.x < 0)
             {
-                transform.Translate(-m_MoveDirection * GameData.Instance.PlayerMovementSensitivity * Time.deltaTime * SwitchDirection);
+                transform.Translate(-m_MoveDirection * (GameData.Instance.PlayerMovementSensitivity * Time.deltaTime * SwitchDirection));
             }
             else if (m_CurrentSwipe.x > 0/* && (currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)*/)
             {
-                transform.Translate(m_MoveDirection * GameData.Instance.PlayerMovementSensitivity * Time.deltaTime * SwitchDirection);
+                transform.Translate(m_MoveDirection * (GameData.Instance.PlayerMovementSensitivity * Time.deltaTime * SwitchDirection));
             }
 
             if (transform.position.z < -.4f)
@@ -236,7 +287,7 @@ namespace BallDrop
         {
             if (!GameData.Instance.IsPlayerScaled)
             {
-                MyEventManager.OnLandedOnXCube.Dispatch(duration, ScaleFactor);
+                MyEventManager.Game.OnLandedOnXCube.Dispatch(duration, ScaleFactor);
                 transform.localScale = GameData.Instance.initialScale * ScaleFactor;
                 GameData.Instance.IsPlayerScaled = true;
                 StartCoroutine(ReturnToNormalScale(duration));
@@ -255,10 +306,9 @@ namespace BallDrop
             {
                 IsDirectionReversed = true;
                 SwitchDirection = -1;
-                MyEventManager.OnLandedOnReverseCube.Dispatch(duration);
+                MyEventManager.Game.OnLandedOnReverseCube.Dispatch(duration);
                 StartCoroutine(ResetMoveDirection(duration));
             }
-
         }
 
         public IEnumerator ResetMoveDirection(float duration)
@@ -275,27 +325,29 @@ namespace BallDrop
             transform.SetPositionAndRotation(GameData.Instance.PlayerStartingPosition, Quaternion.identity);
             if (ColorData.Instance.GetPrimaryColor() != null)
             {
-                m_Renderer.material.SetColor("_StripColor", ColorData.Instance.GetPrimaryColor());
+                UpdateMaterialColor(ColorData.Instance.GetPrimaryColor());
             }
             ResetScale();
-            Shield.Deactivate();
+            ToggleShield(false, Color.white);
             TriggeredOnce = false;
             gameObject.SetActive(true);
             tweenRotate = LeanTween.rotateAround(m_Renderer.gameObject, Vector3.one, 360, 1.5f).setLoopType(LeanTweenType.linear);
             trailCoroutine = StartCoroutine(CreateTrails());
-            MyEventManager.OnPlayerActivated.Dispatch();
-
+            MyEventManager.Game.OnPlayerActivated.Dispatch();
         }
 
         private IEnumerator CreateTrails()
         {
             while (true)
             {
-                TrailImage trailImage = ObjectPool.Instance.GetTrailImage().GetComponent<TrailImage>();
-                trailPosition.x = transform.position.x - 0.5f;
-                trailPosition.y = transform.position.y - 0.4f;
-                trailPosition.z = transform.position.z + 0.18f;
-                trailImage.Activate(trailPosition);
+                TrailImage trailImage = ObjectPool.Instance.GetTrailImage();
+                if (trailImage != null)
+                {
+                    trailPosition.x = transform.position.x - 0.5f;
+                    trailPosition.y = transform.position.y - 0.4f;
+                    trailPosition.z = transform.position.z + 0.18f;
+                    trailImage.Activate(trailPosition);
+                }
                 yield return delay;
             }
         }
@@ -325,7 +377,9 @@ namespace BallDrop
             go.SetActive(true);
             go.transform.SetParent(GameData.Instance.cameraController.DeathParticlePosition.parent);
             go.transform.SetPositionAndRotation(GameData.Instance.cameraController.DeathParticlePosition.position, Quaternion.identity);
-            go.GetComponentInChildren<ParticleSystem>().Play();
+            ParticleSystem particleSystem = go.GetComponentInChildren<ParticleSystem>();
+            if (particleSystem != null)
+                particleSystem.Play();
         }
 
         private IEnumerator ReturnToNormalScale(float duration)
@@ -334,19 +388,25 @@ namespace BallDrop
             ResetScale();
         }
 
-        void UpdateStripHeight(float value)
+        private void UpdateStripHeight(float value)
         {
-            m_Renderer.material.SetFloat("_StripHeight", value);
+            if (m_Renderer != null)
+                m_Renderer.material.SetFloat("_StripHeight", value);
+        }
+
+        private void UpdateMaterialColor(Color color)
+        {
+            if (m_Renderer != null)
+                m_Renderer.material.SetColor("_StripColor", color);
         }
 
         private IEnumerator DisableShield(float duration)
         {
             yield return new WaitForSeconds(duration);
-            Shield.Deactivate();
-            IsShieldActive = false;
+            ToggleShield(false, Color.white);
+            isShieldActive = false;
             GameData.Instance.CurrentTypes.Remove(PowerupType.Shield);
         }
-
     }
 
     internal class TrailScaleData

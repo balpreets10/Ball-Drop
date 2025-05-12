@@ -24,20 +24,19 @@ namespace BallDrop.Manager
 
     public class PlayfabManager : SingletonMonoBehaviour<PlayfabManager>
     {
-
         private bool IsLoggedInToPlayfab = false;
         private LoginResult login_result = null;
 
         private void OnEnable()
         {
             MyEventManager.OnUnityAdsReady.AddListener(OnUnityAdsReady);
-            MyEventManager.OnFacebookLoginComplete.AddListener(OnFacebookSDKLoginComplete);
+            MyEventManager.Menu.OnFacebookLoginComplete.AddListener(OnFacebookSDKLoginComplete);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnUnityAdsReady.RemoveListener(OnUnityAdsReady);
-                MyEventManager.OnFacebookLoginComplete.RemoveListener(OnFacebookSDKLoginComplete);
+            MyEventManager.OnUnityAdsReady.RemoveListener(OnUnityAdsReady);
+            MyEventManager.Menu.OnFacebookLoginComplete.RemoveListener(OnFacebookSDKLoginComplete);
         }
 
         private void Start()
@@ -46,10 +45,11 @@ namespace BallDrop.Manager
         }
 
         #region Private methods
+
         private void OnInternetAvailable()
         {
             if (PreferenceManager.Instance.GetBoolPref(PrefKey.FacebookLogin))
-                MyEventManager.LoginWithFacebook.Dispatch();
+                MyEventManager.Menu.LoginWithFacebook.Dispatch();
             else
             {
 #if UNITY_EDITOR || UNITY_ANDROID
@@ -89,7 +89,6 @@ namespace BallDrop.Manager
                 AndroidDeviceId = SystemInfo.deviceUniqueIdentifier,
 #endif
                 CreateAccount = true
-
             }, OnLoginWithDeviceSuccesfull, OnLoginWithDeviceError);
         }
 
@@ -100,7 +99,6 @@ namespace BallDrop.Manager
                 TitleId = PlayFabSettings.TitleId,
                 DeviceId = SystemInfo.deviceUniqueIdentifier,
                 CreateAccount = true
-
             }, OnLoginWithDeviceSuccesfull, OnLoginWithDeviceError);
         }
 
@@ -147,7 +145,6 @@ namespace BallDrop.Manager
             Debug.unityLogger.Log(GameData.TAG, "fb login complete, syncining with playfab");
             if (PreferenceManager.Instance.GetBoolPref(PrefKey.FacebookLogin))
             {
-                Debug.Log("logging with facebook");
                 LoginWithFaceBook(fBData, UpdateAndGetData);
             }
             else
@@ -217,7 +214,9 @@ namespace BallDrop.Manager
         private void FetchDataOnLogin()
         {
             Debug.unityLogger.Log(GameData.TAG, "Fetching data on login");
+
             #region FUTURE
+
             //List<PlayfabKeys> CostKeys = new List<PlayfabKeys>();
             //CostKeys.Add(PlayfabKeys.TrailCost);
             //CostKeys.Add(PlayfabKeys.SplatterCost);
@@ -232,7 +231,8 @@ namespace BallDrop.Manager
             //    {
             //        MyEventManager.OnPricesFetched.Dispatch(null);
             //    });
-            #endregion
+
+            #endregion FUTURE
 
             GetDataFromPlayfab(null,
               result =>
@@ -280,14 +280,11 @@ namespace BallDrop.Manager
                       {
                           playerData.LastWatchedTime = DateTime.ParseExact(result.Data[PlayfabKeys.LastWatchedTime.ToString()].Value, PlayerData.DTFormat, CultureInfo.InvariantCulture);
                       }
-
                   }
                   catch (Exception e)
                   {
                       Debug.unityLogger.Log(GameData.TAG, e.Message);
                   }
-
-                  Debug.unityLogger.Log(GameData.TAG, "Player data--- " + playerData.ToString());
 
                   MyEventManager.OnUserDataFetched.Dispatch(playerData);
                   MySceneManager.Instance.HideLoadingCanvas();
@@ -299,9 +296,11 @@ namespace BallDrop.Manager
                   MyEventManager.OnUserDataFetched.Dispatch(null);
               });
         }
-        #endregion
+
+        #endregion Private methods
 
         #region Public Methods
+
         public bool IsLoggedIn()
         {
             return IsLoggedInToPlayfab;
@@ -372,7 +371,6 @@ namespace BallDrop.Manager
             {
                 SaveUserData(userData);
             });
-
         }
 
         public void SaveUserData(Dictionary<PlayfabKeys, string> data)
@@ -404,7 +402,7 @@ namespace BallDrop.Manager
                         ResetTotalSeen();
                     });
                 }
-            }, error =>  { });
+            }, error => { });
         }
 
         public void ResetTotalSeen()
@@ -429,6 +427,7 @@ namespace BallDrop.Manager
         }
 
         #region Generic Methods
+
         public void UpdatePlayfabUserData(Dictionary<PlayfabKeys, string> data, Action<UpdateUserDataResult> OnUpdated)
         {
             if (login_result != null)
@@ -493,12 +492,10 @@ namespace BallDrop.Manager
                 Keys = keyList
             };
             PlayFabClientAPI.GetTitleData(request, Result, OnError);
-
         }
 
-        #endregion
+        #endregion Generic Methods
 
-        #endregion
-
+        #endregion Public Methods
     }
 }

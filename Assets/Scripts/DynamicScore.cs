@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BallDrop
 {
-    public class DynamicScore : MonoBehaviour, IDynamicScore
+    public class DynamicScore : UIComponent, IDynamicScore
     {
         [SerializeField]
         private TextMeshProUGUI m_ScoreText;
@@ -22,12 +22,12 @@ namespace BallDrop
         private void OnEnable()
         {
             m_RectTransform = GetComponent<RectTransform>();
-            MyEventManager.EndGame.AddListener(Deactivate);
+            MyEventManager.Game.EndGame.AddListener(Deactivate);
         }
 
         private void OnDisable()
         {
-                MyEventManager.EndGame.RemoveListener(Deactivate);
+            MyEventManager.Game.EndGame.RemoveListener(Deactivate);
         }
 
         public void ActivateAndStartAnimation(int Increment, RectTransform parent)
@@ -37,24 +37,23 @@ namespace BallDrop
             m_RectTransform.anchoredPosition3D = parent.anchoredPosition3D;
             m_RectTransform.anchoredPosition3D = new Vector3(m_RectTransform.anchoredPosition3D.x, m_RectTransform.anchoredPosition3D.y - 250, m_RectTransform.anchoredPosition3D.z);
             Animate();
-
         }
 
-        public void Deactivate()
+        public override void Deactivate()
         {
+            base.Deactivate();
             gameObject.transform.SetParent(ObjectPool.Instance.PooledObjectsHolder);
-            gameObject.SetActive(false);
             //MyEventManager.DeactivateDynamicScore.Dispatch(transform);
         }
 
         public void ActivateAndStartAnimation(Vector3 position, int Increment, RectTransform parent)
         {
+            Activate();
             m_RectTransform.localPosition = position;
             m_RectTransform.SetParent(parent);
             m_ScoreText.text = "+" + Increment;
             Animate();
             //m_RectTransform.anchoredPosition3D = new Vector3(m_RectTransform.anchoredPosition3D.x, m_RectTransform.anchoredPosition3D.y - 250, m_RectTransform.anchoredPosition3D.z);
-
         }
 
         private void Animate()

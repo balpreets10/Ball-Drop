@@ -1,5 +1,6 @@
 ﻿using BallDrop.Manager;
 using Facebook.Unity;
+
 //using GooglePlayGames;
 using System;
 using System.Collections;
@@ -31,24 +32,26 @@ namespace BallDrop
         public Button AdButton;
         public Image ProfilePicture, TitleMask;
         public List<GameObject> Buttons;
+
         //Tweens
         private LTDescr currentLevelRotation;
+
         private Vector3 anchoredPos;
 
         private void OnEnable()
         {
             MyEventManager.OnGameRewardAdReady.AddListener(OnGameRewardAdReady);
             MyEventManager.OnCompletedAwardAd.AddListener(OnCompletedAwardAd);
-            MyEventManager.OnFacebookLoginComplete.AddListener(OnFacebookLoginComplete);
+            MyEventManager.Menu.OnFacebookLoginComplete.AddListener(OnFacebookLoginComplete);
             MyEventManager.UpdateUI.AddListener(UpdateUI);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnGameRewardAdReady.RemoveListener(OnGameRewardAdReady);
-                MyEventManager.OnCompletedAwardAd.RemoveListener(OnCompletedAwardAd);
-                MyEventManager.OnFacebookLoginComplete.RemoveListener(OnFacebookLoginComplete);
-                MyEventManager.UpdateUI.RemoveListener(UpdateUI);
+            MyEventManager.OnGameRewardAdReady.RemoveListener(OnGameRewardAdReady);
+            MyEventManager.OnCompletedAwardAd.RemoveListener(OnCompletedAwardAd);
+            MyEventManager.Menu.OnFacebookLoginComplete.RemoveListener(OnFacebookLoginComplete);
+            MyEventManager.UpdateUI.RemoveListener(UpdateUI);
         }
 
         private void Start()
@@ -79,7 +82,7 @@ namespace BallDrop
         public void StartGame(GameMode mode)
         {
             IncrementGamesPlayed();
-            MyEventManager.SetGameMode.Dispatch(mode);
+            MyEventManager.Menu.SetGameMode.Dispatch(mode);
         }
 
         private void UpdateUI()
@@ -173,6 +176,7 @@ namespace BallDrop
         {
             LeanTween.rotateAroundLocal(CurrentLevelBackground, Vector3.forward, 40f, .75f).setEase(LeanTweenType.easeOutSine).setOnComplete(AnimateLevelPanel);
         }
+
         private void AnimateLevelPanel()
         {
             currentLevelRotation = LeanTween.rotateAroundLocal(CurrentLevelBackground, Vector3.forward, -80f, 1.5f).setLoopPingPong().setEase(LeanTweenType.easeInOutQuad);
@@ -298,7 +302,7 @@ namespace BallDrop
 
         public void LoginWithGoogle()
         {
-            MyEventManager.LoginWithGoogle.Dispatch();
+            MyEventManager.Menu.LoginWithGoogle.Dispatch();
         }
 
         private void ScoreCallBack(IGraphResult result)
@@ -346,7 +350,6 @@ namespace BallDrop
                 MyEventManager.ShowMessage.Dispatch("Welcome back " + PlayerDataManager.Instance.GetPlayerName() + GameStrings.AccountRestorationMsg);
             }
             EnableButtons();
-
         }
 
         public IEnumerator LoadProfilePicture(Image ProfilePicture, string uri)

@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace BallDrop
 {
     public class CoinManager : SingletonMonoBehaviour<CoinManager>
     {
         private int m_Coins = 0;
         private int m_PreviousValue = -1;
-
 
         private void Start()
         {
@@ -24,8 +24,8 @@ namespace BallDrop
 
         private void OnDisable()
         {
-                MyEventManager.UpdateCoins.RemoveListener(UpdateCoins);
-                MyEventManager.OnCompletedAwardAd.RemoveListener(AwardCoins);
+            MyEventManager.UpdateCoins.RemoveListener(UpdateCoins);
+            MyEventManager.OnCompletedAwardAd.RemoveListener(AwardCoins);
         }
 
         private void UpdatePreviousValue()
@@ -65,5 +65,4 @@ namespace BallDrop
             return m_Coins = PreferenceManager.Instance.GetIntPref(PrefKey.Coins, 0);
         }
     }
-
 }

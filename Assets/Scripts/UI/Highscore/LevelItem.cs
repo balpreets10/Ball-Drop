@@ -17,7 +17,7 @@ namespace BallDrop
 
         public void LoadLevelLeaderboard()
         {
-            MyEventManager.LoadLevelLeaderboard.Dispatch(Level);
+            MyEventManager.Menu.LoadLevelLeaderboard.Dispatch(Level);
         }
     }
 }

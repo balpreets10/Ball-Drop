@@ -34,25 +34,27 @@ namespace BallDrop
 
         [Header("For Debugging")]
         public bool enableDeath = true;
+
         public bool enableReverse = true;
 
         [Header("Build Type")]
         public BuildType buildType = BuildType.Test;
 
-
         [Header("Game Values")]
-
         public GameMode gameMode;
+
         public Vector3 PlayerStartingPosition;
         public LevelData levelData;
         public PlayerGameData playerGameData;
         public LevelEndData levelEndData;
 
         private int m_Multiplier = 0;
+
         public int Multiplier
         {
             get { return m_Multiplier; }
         }
+
         private int m_MultiplierCap = 5;
 
         [SerializeField]
@@ -61,6 +63,7 @@ namespace BallDrop
         public Vector3 rowPassPosition = Vector3.zero;
 
         private float m_CurrentRowMovementSpeed;
+
         [SerializeField]
         public float CurrentRowMovementSpeed
         {
@@ -124,20 +127,20 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.SetGameMode.AddListener(SetGameMode);
-            MyEventManager.OnSlowDownCollected.AddListener(OnSlowDown);
-            MyEventManager.OnLevelCompleted.AddListener(OnLevelCompleted);
-            MyEventManager.OnRowPassed.AddListener(OnRowPassed);
-            MyEventManager.OnPlayerDeath.AddListener(OnPlayerDeath);
+            MyEventManager.Menu.SetGameMode.AddListener(SetGameMode);
+            MyEventManager.Game.Powerups.OnSlowDownCollected.AddListener(OnSlowDown);
+            MyEventManager.Game.OnLevelCompleted.AddListener(OnLevelCompleted);
+            MyEventManager.Game.Rows.OnRowPassed.AddListener(OnRowPassed);
+            MyEventManager.Game.OnPlayerDeath.AddListener(OnPlayerDeath);
         }
 
         private void OnDisable()
         {
-                MyEventManager.SetGameMode.RemoveListener(SetGameMode);
-                MyEventManager.OnSlowDownCollected.RemoveListener(OnSlowDown);
-                MyEventManager.OnLevelCompleted.RemoveListener(OnLevelCompleted);
-                MyEventManager.OnRowPassed.RemoveListener(OnRowPassed);
-                MyEventManager.OnPlayerDeath.RemoveListener(OnPlayerDeath);
+            MyEventManager.Menu.SetGameMode.RemoveListener(SetGameMode);
+            MyEventManager.Game.Powerups.OnSlowDownCollected.RemoveListener(OnSlowDown);
+            MyEventManager.Game.OnLevelCompleted.RemoveListener(OnLevelCompleted);
+            MyEventManager.Game.Rows.OnRowPassed.RemoveListener(OnRowPassed);
+            MyEventManager.Game.OnPlayerDeath.RemoveListener(OnPlayerDeath);
         }
 
         private void Start()
@@ -192,7 +195,6 @@ namespace BallDrop
                 BallBounceSpeed = 8f;
                 BallBounceDistance = 3f;
             }
-
         }
 
         private void ResetBounceDataArcade()
@@ -227,7 +229,6 @@ namespace BallDrop
             }
             levelEndData.LevelCleared = false;
             EndGame(false);
-
         }
 
         private void OnLevelCompleted()
@@ -257,7 +258,7 @@ namespace BallDrop
             if (levelCleared)
                 StartCoroutine(EndGameWait());
             else
-                MyEventManager.EndGame.Dispatch();
+                MyEventManager.Game.EndGame.Dispatch();
         }
 
         private IEnumerator EndGameWait()
@@ -267,7 +268,7 @@ namespace BallDrop
             ps.SetActive(true);
 
             yield return new WaitForSeconds(2f);
-            MyEventManager.EndGame.Dispatch();
+            MyEventManager.Game.EndGame.Dispatch();
             ps.SetActive(false);
             MySceneManager.Instance.LoadScene(Scenes.GameEnd);
         }
@@ -291,8 +292,7 @@ namespace BallDrop
             else
                 playerGameData.ConsecutiveRowsPassedCount.Add(m_Multiplier, 1);
 
-            MyEventManager.OnScoreUpdated.Dispatch(Increment);
-
+            MyEventManager.Game.OnScoreUpdated.Dispatch(Increment);
         }
 
         public void IncreaseRowSpeed()
@@ -325,11 +325,9 @@ namespace BallDrop
             CurrentTypes.Remove(PowerupType.SlowDown);
         }
 
-
         public LeanTweenType GetRandomTweenType()
         {
             return (LeanTweenType)UnityEngine.Random.Range(0, leanTweenTypes.Length - 1);
         }
-
     }
 }

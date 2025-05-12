@@ -8,12 +8,12 @@ namespace BallDrop
     {
         private void OnEnable()
         {
-            MyEventManager.PauseGame.AddListener(OnPause);
+            MyEventManager.Game.PauseGame.AddListener(OnPause);
         }
 
         private void OnDisable()
         {
-                MyEventManager.PauseGame.RemoveListener(OnPause);
+            MyEventManager.Game.PauseGame.RemoveListener(OnPause);
         }
 
         private void OnPause()
@@ -42,11 +42,10 @@ namespace BallDrop
         public void QuitGame()
         {
             UpdateTimeScale(1);
-            MyEventManager.EndGame.Dispatch();
+            MyEventManager.Game.EndGame.Dispatch();
             MyEventManager.QuitGame.Dispatch();
             HidePopup(true);
             MySceneManager.Instance.LoadScene(Scenes.Menu);
         }
-
     }
 }

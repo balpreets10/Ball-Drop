@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace BallDrop
 {
-    public class BottomMenuToggle : MonoBehaviour
+    public class BottomMenuToggle : UIComponent
     {
         private Toggle myToggle;
         public GameObject Background;
@@ -14,8 +15,9 @@ namespace BallDrop
         private Vector3 IsOnScale = Vector3.one * 1.15f;
         private Vector3 movePosition = new Vector3(0, 50, 0);
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             myToggle = GetComponent<Toggle>();
             myToggle.isOn = false;
             Background.transform.localScale = Vector3.zero;
@@ -33,7 +35,7 @@ namespace BallDrop
                 LeanTween.scale(Icon, IsOnScale, .15f).setEase(LeanTweenType.linear);
                 LeanTween.moveLocal(Icon, movePosition, .15f).setEase(LeanTweenType.linear);
                 LeanTween.scale(Text, Vector3.one, .15f).setEase(LeanTweenType.linear);
-                MyEventManager.ScrollToMenu.Dispatch(transform.GetSiblingIndex());
+                MyEventManager.Menu.ScrollToMenu.Dispatch(transform.GetSiblingIndex());
             }
             else
             {
@@ -42,7 +44,6 @@ namespace BallDrop
                 LeanTween.moveLocal(Icon, Vector3.zero, .15f).setEase(LeanTweenType.linear);
                 LeanTween.scale(Text, Vector3.zero, .15f).setEase(LeanTweenType.linear);
             }
-
         }
     }
 }

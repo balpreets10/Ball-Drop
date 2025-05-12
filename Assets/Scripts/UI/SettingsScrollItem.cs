@@ -22,21 +22,22 @@ namespace BallDrop
         public void ChangeSensitivity(float value)
         {
             PreferenceManager.Instance.UpdateIntPref(PrefKey.MovementSensitivity, (int)value);
+            Debug.Log("Updated Sensitivity - " + (int)value);
         }
 
         public void ChangeMusicVolume(float value)
         {
-            MyEventManager.OnMusicVolumeChanged.Dispatch(value);
+            MyEventManager.Menu.OnMusicVolumeChanged.Dispatch(value);
         }
 
         public void ChangeEffectVolume(float value)
         {
-            MyEventManager.OnEffectVolumeChanged.Dispatch(value);
+            MyEventManager.Menu.OnEffectVolumeChanged.Dispatch(value);
         }
 
         public void ChangeBackground()
         {
-            MyEventManager.ChangeTexture.Dispatch();
+            MyEventManager.Menu.ChangeTexture.Dispatch();
         }
     }
 }

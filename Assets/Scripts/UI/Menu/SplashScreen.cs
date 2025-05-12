@@ -21,12 +21,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.OnObjectsInstantiated.AddListener(OnObjectInstantiated);
+            MyEventManager.Splash.OnObjectsInstantiated.AddListener(OnObjectInstantiated);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnObjectsInstantiated.RemoveListener(OnObjectInstantiated);
+            MyEventManager.Splash.OnObjectsInstantiated.RemoveListener(OnObjectInstantiated);
         }
 
         public override void Start()
@@ -57,7 +57,6 @@ namespace BallDrop
                 MyEventManager.Reveal.Dispatch();
                 GameData.Instance.levelData.Level = PreferenceManager.Instance.GetIntPref(PrefKey.PlayerLevel, 1);
                 MySceneManager.Instance.LoadScene(Scenes.Menu, false);
-
             }
         }
 
@@ -67,7 +66,7 @@ namespace BallDrop
             LoadMainMenu();
         }
 
-        void OnSliderFilled()
+        private void OnSliderFilled()
         {
             SliderFilled = true;
             percentage.text = "Loading...";
@@ -85,6 +84,5 @@ namespace BallDrop
             m_Renderer.material.SetFloat("_StripHeight", value);
             percentage.text = (int)(value * 200) + "%";
         }
-
     }
 }

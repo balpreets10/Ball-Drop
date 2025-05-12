@@ -5,11 +5,12 @@ using UnityEngine;
 
 namespace BallDrop.Base
 {
-    public class BaseCube : MonoBehaviour, ICube
+    public class BaseCube : GameComponent, ICube
     {
         public CubeType m_BaseCubeType;
         public MeshRenderer m_Renderer;
         public BoxCollider m_BoxCollider;
+
         [Header("Cubes that effect Gameplay")]
         public float EffectDuration;
 
@@ -20,8 +21,9 @@ namespace BallDrop.Base
         private RectTransform m_RectTransform;
         public Vector3 InitialScale;
 
-        public virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             m_RectTransform = GetComponent<RectTransform>();
             InitialScale = transform.localScale;
         }
@@ -30,10 +32,6 @@ namespace BallDrop.Base
         {
             if (other.CompareTag("Projectile"))
             {
-                //if (transform.parent.GetComponent<RowBase>() != null)
-                //    transform.parent.GetComponent<RowBase>().RemoveFromCubes(this);
-                //transform.parent = ObjectPool.Instance.PooledObjectsHolder;
-                //GameData.Instance.playerGameData.AddCubeData(GetBaseCubeType());
                 ObjectPool.Instance.GetBreakParticle().Activate(transform.position, ColorData.Instance.GetPrimaryColor());
                 transform.localScale = Vector3.zero;
             }
@@ -45,8 +43,8 @@ namespace BallDrop.Base
             transform.SetPositionAndRotation(new Vector3(parent.position.x + 10, parent.position.y, zpos), Quaternion.identity);
             LeanTween.scale(gameObject, InitialScale, .1f);
             LeanTween.moveLocalX(gameObject, parent.position.x, .1f);
-            gameObject.transform.SetParent(parent);
-            gameObject.SetActive(true);
+            transform.SetParent(parent);
+            Activate();
         }
 
         public virtual void FlipAndDeactivate()
@@ -55,7 +53,7 @@ namespace BallDrop.Base
             LeanTween.moveLocalY(gameObject, transform.localPosition.y + UnityEngine.Random.Range(20, 30), .75f).setOnComplete(Deactivate);
         }
 
-        public virtual void Deactivate()
+        public override void Deactivate()
         {
             try
             {
@@ -63,14 +61,14 @@ namespace BallDrop.Base
             }
             catch (Exception) { }
             transform.localScale = Vector3.zero;
-            gameObject.SetActive(false);
+            base.Deactivate();
         }
 
         public void SetTexture(Texture cubeTexture)
         {
             if (m_Renderer == null)
                 GetRenderer();
-            if (cubeTexture != null)
+            if (cubeTexture != null && m_Renderer != null)
             {
                 m_Renderer.material.SetTexture("_MainTex", cubeTexture);
             }
@@ -78,17 +76,20 @@ namespace BallDrop.Base
 
         private void GetRenderer()
         {
-            m_Renderer = gameObject.GetComponent<MeshRenderer>();
+            if (m_Renderer != null)
+                m_Renderer = gameObject.GetComponent<MeshRenderer>();
         }
 
         public void SetBaseCubeType(CubeType cubeType)
         {
-            m_BaseCubeType = cubeType;
+            if (m_Renderer != null)
+                m_BaseCubeType = cubeType;
         }
 
         public void SetColor(Color color)
         {
-            m_Renderer.material.SetColor("_CubeColor", color);
+            if (m_Renderer != null)
+                m_Renderer.material.SetColor("_CubeColor", color);
         }
 
         public virtual void PlayBounceSound()
@@ -123,6 +124,5 @@ namespace BallDrop.Base
         {
             return m_RectTransform;
         }
-
     }
 }

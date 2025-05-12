@@ -12,10 +12,11 @@ namespace BallDrop
     public class GameController : MonoBehaviour
     {
         private List<Vector3> Axes = new List<Vector3>();
+
         private void OnEnable()
         {
-            MyEventManager.OnRowsSpawned.AddListener(OnRowsSpawned);
-            MyEventManager.OnPlayerActivated.AddListener(OnPlayerActivated);
+            MyEventManager.Game.Rows.OnRowsSpawned.AddListener(OnRowsSpawned);
+            MyEventManager.Game.OnPlayerActivated.AddListener(OnPlayerActivated);
         }
 
         private void Start()
@@ -31,8 +32,8 @@ namespace BallDrop
 
         private void OnDisable()
         {
-                MyEventManager.OnRowsSpawned.RemoveListener(OnRowsSpawned);
-                MyEventManager.OnPlayerActivated.RemoveListener(OnPlayerActivated);
+            MyEventManager.Game.Rows.OnRowsSpawned.RemoveListener(OnRowsSpawned);
+            MyEventManager.Game.OnPlayerActivated.RemoveListener(OnPlayerActivated);
         }
 
         private void OnPlayerActivated()

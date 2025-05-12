@@ -9,11 +9,12 @@ namespace BallDrop
     {
         [Range(-0.01f, -0.3f)]
         public float speed;
+
         public Vector2 offset;
         public MeshRenderer meshRenderer;
         public List<Color> color;
 
-        void Start()
+        private void Start()
         {
             meshRenderer = GetComponent<MeshRenderer>();
         }
@@ -25,8 +26,7 @@ namespace BallDrop
 
         private void OnDisable()
         {
-                MyEventManager.OnBackgroundUpdated.RemoveListener(OnBackgroundUpdated);
-
+            MyEventManager.OnBackgroundUpdated.RemoveListener(OnBackgroundUpdated);
         }
 
         private void Update()
@@ -39,7 +39,5 @@ namespace BallDrop
         {
             meshRenderer.material.SetTexture("_MainTex", sprite);
         }
-
     }
-
 }

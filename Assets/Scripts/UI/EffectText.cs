@@ -3,38 +3,57 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+
 namespace BallDrop
 {
     [RequireComponent(typeof(Billboard))]
-    public class EffectText : MonoBehaviour
+    public class EffectText : UIComponent
     {
-
         public TextMeshProUGUI Text;
         private RectTransform rectTransform;
         public bool activeInHierarchy { get { return gameObject.activeInHierarchy; } }
 
-        private void Awake()
+        protected override void Awake()
         {
-            rectTransform = GetComponent<RectTransform>();
+            base.Awake();
+            if (rectTransform == null)
+                rectTransform = GetComponent<RectTransform>();
         }
 
-        public void Activate(Transform parent, Vector3 position, string Text)
+        public void Activate(Transform parent, Vector3 position, string textValue)
         {
-            gameObject.SetActive(true);
+            Activate();
             SetParent(parent);
-            this.Text.text = Text;
-            this.Text.color = ColorData.Instance.GetSecondaryColor();
-            this.Text.outlineWidth = .4f;
-            this.Text.outlineColor = ColorData.Instance.GetPrimaryColor();
-            rectTransform.localScale = Vector3.one;
-            rectTransform.anchoredPosition3D = position;
+            SetText(textValue);
+            SetRect(position);
             LeanTween.scale(gameObject, Vector3.one * 2f, .75f).setOnComplete(Deactivate).setEase(LeanTweenType.linear);
             LeanTween.moveLocalY(gameObject, rectTransform.anchoredPosition3D.y + 200, .75f);
         }
 
-        private void Deactivate()
+        private void SetText(string textValue)
         {
-            gameObject.SetActive(false);
+            if (Text != null)
+            {
+                Text.text = textValue;
+                Text.color = ColorData.Instance.GetSecondaryColor();
+                Text.outlineWidth = .4f;
+                Text.outlineColor = ColorData.Instance.GetPrimaryColor();
+            }
+        }
+
+        private void SetRect(Vector3 position)
+        {
+            if (rectTransform != null)
+            {
+                rectTransform.localScale = Vector3.one;
+                rectTransform.anchoredPosition3D = position;
+                rectTransform.localRotation = Quaternion.identity;
+            }
+        }
+
+        public override void Deactivate()
+        {
+            base.Deactivate();
             SetParent(ObjectPool.Instance.PooledObjectsHolder);
         }
 
@@ -43,5 +62,4 @@ namespace BallDrop
             transform.SetParent(parent);
         }
     }
-
 }

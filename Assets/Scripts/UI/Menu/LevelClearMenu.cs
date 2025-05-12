@@ -10,7 +10,6 @@ namespace BallDrop
     public class LevelClearMenu : PrimaryMenu
     {
         public FbPopup fbPopup;
-
         public TextMeshProUGUI TxtScoreValue;
         public TextMeshProUGUI PanelTitle;
         public Image Background;
@@ -46,7 +45,6 @@ namespace BallDrop
         public TextMeshProUGUI TitleX;
         public TextMeshProUGUI TitleSpikes;
         public TextMeshProUGUI TitleReverse;
-
 
         private Dictionary<CubeType, int> CubeData;
         private LevelEndData levelEndData;
@@ -86,7 +84,7 @@ namespace BallDrop
         {
             PreferenceManager.Instance.IncrementIntPref(PrefKey.GamesPlayed, 0);
             StopParticleSystem();
-            MyEventManager.SetGameMode.Dispatch(GameData.Instance.gameMode);
+            MyEventManager.Menu.SetGameMode.Dispatch(GameData.Instance.gameMode);
         }
 
         public void MainMenu()
@@ -332,7 +330,6 @@ namespace BallDrop
             GameObject star = (GameObject)parameters;
             LeanTween.rotateAroundLocal(star.gameObject, Vector3.forward, 360, 1.5f).setLoopPingPong();
             StartCongratulatoryParticleSystem();
-
         }
 
         private void OnScoreLoaded(float score)

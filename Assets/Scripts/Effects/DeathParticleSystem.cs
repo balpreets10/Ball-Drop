@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DeathParticleSystem : MonoBehaviour
 {
-    GameObject parent;
+    private GameObject parent;
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class DeathParticleSystem : MonoBehaviour
 
     private void OnDisable()
     {
-            MyEventManager.QuitGame.RemoveListener(OnQuitGame);
+        MyEventManager.QuitGame.RemoveListener(OnQuitGame);
     }
 
     private void OnQuitGame()
@@ -38,5 +38,4 @@ public class DeathParticleSystem : MonoBehaviour
         parent.transform.SetParent(ObjectPool.Instance.PooledObjectsHolder);
         MySceneManager.Instance.LoadScene(Scenes.GameEnd);
     }
-
 }

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class CoinBase : MonoBehaviour
 {
-    Vector3 initialScale;
+    private Vector3 initialScale;
+
     [SerializeField]
-    AudioClip CoinCollectionSound;
+    private AudioClip CoinCollectionSound;
 
     private void Awake()
     {
@@ -26,11 +27,14 @@ public class CoinBase : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             MyEventManager.UpdateCoins.Dispatch();
-            if(CoinCollectionSound != null)
+            if (CoinCollectionSound != null)
                 AudioManager.Instance.PlayEffect(CoinCollectionSound);
-            GameObject particles = ObjectPool.Instance.GetCoinCollectionParticles();
-            particles.transform.position = transform.position;
-            particles.GetComponent<ParticleSystem>().Play();
+            ParticleSystem particles = ObjectPool.Instance.GetCoinCollectionParticles().GetComponent<ParticleSystem>();
+            if (particles != null)
+            {
+                particles.transform.position = transform.position;
+                particles.Play();
+            }
             Deactivate();
         }
     }
@@ -45,5 +49,4 @@ public class CoinBase : MonoBehaviour
         transform.parent = ObjectPool.Instance.PooledObjectsHolder;
         gameObject.SetActive(false);
     }
-
 }

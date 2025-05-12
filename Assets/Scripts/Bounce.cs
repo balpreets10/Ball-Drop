@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BallDrop
 {
-    public class Bounce : MonoBehaviour
+    public class Bounce : GameComponent
     {
         private float GoingDownFactor = 1;
         private bool completed = false;
@@ -15,25 +15,27 @@ namespace BallDrop
         public LeanTweenType bounceEase;
 
         #region --------------------LISTENERS-------------------------
+
         private void OnEnable()
         {
-            MyEventManager.OnPlayerActivated.AddListener(ResetData);
+            MyEventManager.Game.OnPlayerActivated.AddListener(ResetData);
             MyEventManager.OnCompletedRevivalAd.AddListener(OnCompletedRevivalAd);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnPlayerActivated.RemoveListener(ResetData);
-                MyEventManager.OnCompletedRevivalAd.RemoveListener(OnCompletedRevivalAd);
+            MyEventManager.Game.OnPlayerActivated.RemoveListener(ResetData);
+            MyEventManager.OnCompletedRevivalAd.RemoveListener(OnCompletedRevivalAd);
         }
-        #endregion
 
-        private void Start()
+        #endregion --------------------LISTENERS-------------------------
+
+        protected override void Start()
         {
+            base.Start();
             myPlayerBase = GetComponent<PlayerBase>();
             playerState = PlayerState.GoingDown;
         }
-
 
         private void Update()
         {
@@ -50,7 +52,6 @@ namespace BallDrop
             GoingDownFactor = 1;
             playerState = PlayerState.GoingDown;
         }
-
 
         private void BallDown()
         {
@@ -75,7 +76,7 @@ namespace BallDrop
             }
             else if (collision.gameObject.CompareTag(CubeType.Enemy.ToString()) || collision.gameObject.CompareTag(CubeType.Spike.ToString()))
             {
-                if (myPlayerBase.IsShieldActive)
+                if (myPlayerBase.IsShieldActive())
                 {
                     SquishEffect(collision.gameObject);
                     ChangeStateToUp();
@@ -93,7 +94,7 @@ namespace BallDrop
                 ChangeStateToUp();
                 collisionCube = collision.gameObject.GetComponent<ICube>();
                 collisionCube.PlayBounceSound();
-                if (!myPlayerBase.IsShieldActive)
+                if (!myPlayerBase.IsShieldActive())
                 {
                     myPlayerBase.IncreaseScale(collisionCube.GetEffectDuration());
                 }
@@ -104,7 +105,7 @@ namespace BallDrop
                 SquishEffect(collision.gameObject);
                 collisionCube = collision.gameObject.GetComponent<ICube>();
                 collisionCube.PlayBounceSound();
-                if (!myPlayerBase.IsShieldActive && GameData.Instance.enableReverse)
+                if (!myPlayerBase.IsShieldActive() && GameData.Instance.enableReverse)
                 {
                     myPlayerBase.SwitchMoveDirection(collisionCube.GetEffectDuration());
                 }
@@ -143,7 +144,7 @@ namespace BallDrop
 
         private void SquishEffect(GameObject cube)
         {
-            ObjectPool.Instance.GetSplatterEffect().ActivateAndSetParent(myPlayerBase.m_Renderer.transform.position, cube.transform);
+            ObjectPool.Instance.GetSplatterEffect().ActivateAndSetParent(myPlayerBase.GetCurrentPosition(), cube.transform);
             LeanTween.scale(gameObject, new Vector3(transform.localScale.x, transform.localScale.y - 0.2f, transform.localScale.z + 0.2f), 0.05f).setOnComplete(RevertToOriginalState);
         }
 
@@ -166,7 +167,7 @@ namespace BallDrop
             else
             {
                 myPlayerBase.Deactivate();
-                MyEventManager.OnPlayerDeath.Dispatch();
+                MyEventManager.Game.OnPlayerDeath.Dispatch();
             }
         }
 
@@ -190,17 +191,18 @@ namespace BallDrop
 
         public void LevelComplete()
         {
-            MyEventManager.OnLevelCompleted.Dispatch();
+            MyEventManager.Game.OnLevelCompleted.Dispatch();
             myPlayerBase.Invoke("Reset", 2f);
         }
 
         #region ContextMenus
+
         [ContextMenu("GetViewportPoint")]
         public void GetViewPortPoint()
         {
             Debug.Log(Camera.main.WorldToViewportPoint(transform.position));
         }
-        #endregion
 
+        #endregion ContextMenus
     }
 }

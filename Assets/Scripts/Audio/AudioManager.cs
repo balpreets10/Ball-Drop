@@ -31,40 +31,47 @@ namespace BallDrop.Audio
 
         private void OnEnable()
         {
-            MyEventManager.OnMusicVolumeChanged.AddListener(OnMusicVolumeChanged);
-            MyEventManager.OnEffectVolumeChanged.AddListener(OnEffectVolumeChanged);
-            MyEventManager.PauseGame.AddListener(OnGamePause);
-            MyEventManager.EndGame.AddListener(OnGameEnd);
+            MyEventManager.Menu.OnMusicVolumeChanged.AddListener(OnMusicVolumeChanged);
+            MyEventManager.Menu.OnEffectVolumeChanged.AddListener(OnEffectVolumeChanged);
+            MyEventManager.Game.PauseGame.AddListener(OnGamePause);
+            MyEventManager.Game.EndGame.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnMusicVolumeChanged.RemoveListener(OnMusicVolumeChanged);
-                MyEventManager.OnEffectVolumeChanged.RemoveListener(OnEffectVolumeChanged);
-                MyEventManager.PauseGame.RemoveListener(OnGamePause);
-                MyEventManager.EndGame.RemoveListener(OnGameEnd);
+            MyEventManager.Menu.OnMusicVolumeChanged.RemoveListener(OnMusicVolumeChanged);
+            MyEventManager.Menu.OnEffectVolumeChanged.RemoveListener(OnEffectVolumeChanged);
+            MyEventManager.Game.PauseGame.RemoveListener(OnGamePause);
+            MyEventManager.Game.EndGame.RemoveListener(OnGameEnd);
         }
 
         private void Start()
         {
             foreach (AudioSource source in EffectsSource)
             {
-                source.loop = false;
-                source.volume = PreferenceManager.Instance.GetFloatPref(PrefKey.Effect, 0.1f);
-                source.Stop();
-                source.playOnAwake = false;
-                source.clip = null;
-                source.mute = false;
+                if (source != null)
+                {
+                    source.loop = false;
+                    source.volume = PreferenceManager.Instance.GetFloatPref(PrefKey.Effect, 0.1f);
+                    source.Stop();
+                    source.playOnAwake = false;
+                    source.clip = null;
+                    source.mute = false;
+                }
             }
-            MusicSourceMaxVolume = MusicSource.volume = PreferenceManager.Instance.GetFloatPref(PrefKey.Music, 0.05f);
+            if (MusicSource != null)
+                MusicSourceMaxVolume = MusicSource.volume = PreferenceManager.Instance.GetFloatPref(PrefKey.Music, 0.05f);
         }
 
         public AudioSource GetEffectSource()
         {
             foreach (AudioSource source in EffectsSource)
             {
-                if (source.clip == null || !source.isPlaying)
-                    return source;
+                if (source != null)
+                {
+                    if (source.clip == null || !source.isPlaying)
+                        return source;
+                }
             }
             return null;
         }
@@ -88,28 +95,22 @@ namespace BallDrop.Audio
         private void RemoveClipFromSource(object param)
         {
             AudioSource source = (AudioSource)param;
-            source.Stop();
-            source.clip = null;
+            if (source != null)
+            {
+                source.Stop();
+                source.clip = null;
+            }
         }
 
         // Play a single clip through the music source.
         public void PlayMusic(AudioClip clip)
         {
-            MusicSource.clip = clip;
-            //musicState = MusicState.Play;
+            if (MusicSource != null)
+            {
+                MusicSource.clip = clip;
+            }
             LeanTween.value(gameObject, OnVolumeChanged, 0, MusicSourceMaxVolume, .2f);
         }
-
-        // Play a random clip from an array, and randomize the pitch slightly.
-        //public void RandomSoundEffect(params AudioClip[] clips)
-        //{
-        //    int randomIndex = UnityEngine.Random.Range(0, clips.Length);
-        //    //float randomPitch = UnityEngine.Random.Range(LowPitchRange, HighPitchRange);
-
-        //    //EffectsSource.pitch = randomPitch;
-        //    EffectsSource.clip = clips[randomIndex];
-        //    EffectsSource.Play();
-        //}
 
         private void OnMusicVolumeChanged(float volume)
         {
@@ -120,11 +121,12 @@ namespace BallDrop.Audio
         private void OnEffectVolumeChanged(float volume)
         {
             foreach (AudioSource source in EffectsSource)
-                source.volume = volume;
+            {
+                if (source != null)
+                    source.volume = volume;
+            }
             PreferenceManager.Instance.UpdateFloatPref(PrefKey.Effect, volume);
         }
-
-
 
         private void OnGameEnd()
         {
@@ -133,7 +135,8 @@ namespace BallDrop.Audio
 
         private void OnGamePause()
         {
-            MusicSource.Pause();
+            if (MusicSource != null)
+                MusicSource.Pause();
         }
 
         private void OnGameStart()
@@ -143,21 +146,26 @@ namespace BallDrop.Audio
 
         public void Unpause()
         {
-            MusicSource.UnPause();
+            if (MusicSource != null)
+                MusicSource.UnPause();
             LeanTween.value(gameObject, OnVolumeChanged, 0, MusicSourceMaxVolume, .2f);
         }
 
         private void OnVolumeChanged(float volume)
         {
-            MusicSource.volume = volume;
+            if (MusicSource != null)
+                MusicSource.volume = volume;
         }
 
         public void PlayBgMusic()
         {
             int randomIndex = UnityEngine.Random.Range(0, BackgroundMusic.Length);
-            MusicSource.clip = BackgroundMusic[randomIndex];
-            MusicSource.Stop();
-            MusicSource.Play();
+            if (MusicSource != null)
+            {
+                MusicSource.clip = BackgroundMusic[randomIndex];
+                MusicSource.Stop();
+                MusicSource.Play();
+            }
             LeanTween.value(gameObject, OnVolumeChanged, 0, MusicSourceMaxVolume, .2f);
         }
     }

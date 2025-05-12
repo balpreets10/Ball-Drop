@@ -13,52 +13,76 @@ namespace BallDrop
 
         [SerializeField]
         private GameObject Player;
+
         [SerializeField]
         private GameObject Row;
+
         [SerializeField]
         private GameObject Coin;
+
         [SerializeField]
         private GameObject NormalCube;
+
         [SerializeField]
         private GameObject EnemyCube;
+
         [SerializeField]
         private GameObject FadedCube;
+
         [SerializeField]
         private GameObject MovingCube;
+
         [SerializeField]
         private GameObject XCube;
+
         [SerializeField]
         private GameObject SpikeCube;
+
         [SerializeField]
         private GameObject ReverseCube;
+
         [SerializeField]
         private GameObject InvisibleCube;
+
         [SerializeField]
         private GameObject LandingCube;
+
         [SerializeField]
         private GameObject ShieldPowerUp;
+
         [SerializeField]
         private GameObject SlowDownPowerUp;
+
         [SerializeField]
         private GameObject ProjectilePrefab;
+
         [SerializeField]
         private GameObject DynamicScore;
+
         [SerializeField]
         private GameObject TrailImage;
+
         [SerializeField]
         private GameObject EffectText;
+
         [SerializeField]
         private GameObject VerticalBeam;
+
         [SerializeField]
         private GameObject SplatterEffect;
+
         [SerializeField]
         private GameObject BreakParticle;
+
         [SerializeField]
         private GameObject CongratulatoryParticleSystem;
+
         [SerializeField]
         private GameObject GameOverParticleSystem;
+
         [SerializeField]
         private GameObject DeathParticleSystem;
+
         [SerializeField]
         private GameObject CoinCollectionParticles;
 
@@ -88,23 +112,30 @@ namespace BallDrop
         private GameObject CurrentCongratulatoryParticleSystem;
         private GameObject CurrentGameOverParticleSystem;
 
-
         [HideInInspector]
         public List<GameObject> NormalCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> EnemyCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> MovingCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> SpikeCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> ReverseCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> XCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> FadedCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> InvisibleCubes = new List<GameObject>();
+
         [HideInInspector]
         public List<GameObject> LandingCubes = new List<GameObject>();
 
@@ -127,8 +158,8 @@ namespace BallDrop
         private List<IPowerup> VerticalBeams = new List<IPowerup>();
         private List<IPowerup> LineGuides = new List<IPowerup>();
 
-
         #region Instantiation
+
         public IEnumerator InstantiateObjects()
         {
             Application.targetFrameRate = 60;
@@ -337,14 +368,17 @@ namespace BallDrop
                 for (int i = 0; i < VerticalBeamCount; i++)
                 {
                     IPowerup powerup = Instantiate(VerticalBeam, PooledObjectsHolder, true).GetComponent<IPowerup>();
-                    powerup.name = "Vertical Beam - " + i;
-                    powerup.SetActive(false);
-                    VerticalBeams.Add(powerup);
+                    if (powerup != null)
+                    {
+                        powerup.name = "Vertical Beam - " + i;
+                        powerup.SetActive(false);
+                        VerticalBeams.Add(powerup);
+                    }
                 }
-
             }
 
             #region Projectile Particles
+
             if (ProjectilePrefab != null)
             {
                 for (int i = 0; i < ProjectileCount; i++)
@@ -355,8 +389,8 @@ namespace BallDrop
                     projectileParticles.Add(projectile);
                     yield return null;
                 }
-
             }
+
             #endregion Projectile Particles
 
             #endregion Powerups
@@ -409,7 +443,6 @@ namespace BallDrop
                     DynamicScores.Add(gameObject);
                     yield return null;
                 }
-
             }
 
             #endregion Dynamic Score
@@ -427,7 +460,6 @@ namespace BallDrop
                     TrailImages.Add(gameObject.GetComponent<TrailImage>());
                     yield return null;
                 }
-
             }
 
             #endregion Trail Image
@@ -445,8 +477,6 @@ namespace BallDrop
                     BreakParticles.Add(breakParticle);
                     yield return null;
                 }
-
-
             }
 
             #endregion Break Particle System
@@ -464,13 +494,11 @@ namespace BallDrop
                     CongratulatoryParticleSystems.Add(gameObject);
                     yield return null;
                 }
-
             }
 
             #endregion Congratulatory Particle System
 
             #region Game Over Particle System
-
 
             if (GameOverParticleSystem != null)
             {
@@ -483,12 +511,12 @@ namespace BallDrop
                     GameOverParticleSystems.Add(gameObject);
                     yield return null;
                 }
-
             }
 
             #endregion Game Over Particle System
 
             #region Death Particles
+
             if (DeathParticleSystem != null)
             {
                 for (int i = 0; i < DeathParticleCount; i++)
@@ -500,9 +528,11 @@ namespace BallDrop
                     yield return null;
                 }
             }
-            #endregion
+
+            #endregion Death Particles
 
             #region Coin Collection Effect Particles
+
             if (CoinCollectionParticles != null)
             {
                 for (int i = 0; i < DeathParticleCount; i++)
@@ -514,13 +544,16 @@ namespace BallDrop
                     yield return null;
                 }
             }
-            #endregion
 
-            MyEventManager.OnObjectsInstantiated.Dispatch();
+            #endregion Coin Collection Effect Particles
+
+            MyEventManager.Splash.OnObjectsInstantiated.Dispatch();
         }
-        #endregion
+
+        #endregion Instantiation
 
         #region GetObjects
+
         public GameObject GetPlayer()
         {
             if (CurrentPlayer == null)
@@ -580,11 +613,13 @@ namespace BallDrop
             }
 
             EffectText effect = Instantiate(EffectText, PooledObjectsHolder, true).GetComponent<EffectText>();
-            effect.name = "Effect Text - Expanded";
-            effect.SetActive(false);
-            EffectTexts.Add(effect);
+            if (effect != null)
+            {
+                effect.name = "Effect Text - Expanded";
+                effect.SetActive(false);
+                EffectTexts.Add(effect);
+            }
             return effect;
-
         }
 
         public BaseSplatter GetSplatterEffect()
@@ -598,9 +633,12 @@ namespace BallDrop
             }
 
             BaseSplatter splatter = Instantiate(SplatterEffect, PooledObjectsHolder, true).GetComponent<BaseSplatter>();
-            splatter.name = "SplatterEffect - Expanded";
-            splatter.SetActive(false);
-            SplatterEffects.Add(splatter);
+            if (splatter != null)
+            {
+                splatter.name = "SplatterEffect - Expanded";
+                splatter.SetActive(false);
+                SplatterEffects.Add(splatter);
+            }
             return splatter;
         }
 
@@ -615,9 +653,12 @@ namespace BallDrop
             }
 
             CoinBase coin = Instantiate(Coin, PooledObjectsHolder, true).GetComponent<CoinBase>();
-            coin.name = "Coin - Expanded";
-            coin.SetActive(false);
-            Coins.Add(coin);
+            if (coin != null)
+            {
+                coin.name = "Coin - Expanded";
+                coin.SetActive(false);
+                Coins.Add(coin);
+            }
             return coin;
         }
 
@@ -632,9 +673,12 @@ namespace BallDrop
             }
 
             BreakParticle particle = Instantiate(BreakParticle, PooledObjectsHolder, true).GetComponent<BreakParticle>();
-            particle.name = "Break Particle - Expanded";
-            particle.SetActive(false);
-            BreakParticles.Add(particle);
+            if (particle != null)
+            {
+                particle.name = "Break Particle - Expanded";
+                particle.SetActive(false);
+                BreakParticles.Add(particle);
+            }
             return particle;
         }
 
@@ -648,11 +692,14 @@ namespace BallDrop
                 }
             }
 
-            GameObject gameObject = Instantiate(TrailImage, PooledObjectsHolder, true);
-            gameObject.name = "Trail Image - Expanded";
-            gameObject.SetActive(false);
-            TrailImages.Add(gameObject.GetComponent<TrailImage>());
-            return gameObject.GetComponent<TrailImage>();
+            TrailImage image = Instantiate(TrailImage, PooledObjectsHolder, true).GetComponent<TrailImage>();
+            if (image != null)
+            {
+                image.name = "Trail Image - Expanded";
+                image.Deactivate();
+                TrailImages.Add(image);
+            }
+            return image;
         }
 
         public GameObject GetRandomObject()
@@ -665,7 +712,6 @@ namespace BallDrop
                 }
             }
             return null;
-
         }
 
         public GameObject GetCube(CubeType cubeType)
@@ -703,6 +749,7 @@ namespace BallDrop
                     Cube = SpikeCube;
                     cubes = SpikeCubes;
                     break;
+
                 case CubeType.Reverse:
                     Cube = ReverseCube;
                     cubes = ReverseCubes;
@@ -893,9 +940,10 @@ namespace BallDrop
         //    return guide;
         //}
 
-            #endregion
+        #endregion GetObjects
 
         #region Others
+
         public int GetTotalObjectCount()
         {
             int Total = 0;
@@ -982,8 +1030,8 @@ namespace BallDrop
             {
                 trailImage.GetComponent<Billboard>().SetCamera();
             }
-
         }
+
         public void DeactivateTrails()
         {
             foreach (TrailImage trail in TrailImages)
@@ -992,6 +1040,7 @@ namespace BallDrop
                     trail.Deactivate();
             }
         }
-        #endregion
+
+        #endregion Others
     }
 }

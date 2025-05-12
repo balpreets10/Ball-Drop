@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace BallDrop
 {
     public class FillablePanel : MonoBehaviour
@@ -10,7 +11,6 @@ namespace BallDrop
         public RectTransform EffectTextRectTransform;
         public Transform GameMenu;
         private int Counter = 0;
-
 
         private void Start()
         {
@@ -23,20 +23,20 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.OnPlayerDeath.AddListener(FinishUp);
-            MyEventManager.OnLandedOnXCube.AddListener(OnLandedOnX);
-            MyEventManager.OnLandedOnReverseCube.AddListener(OnLandedOnReverseCube);
-            MyEventManager.OnShieldCollected.AddListener(OnShieldCollected);
-            MyEventManager.OnSlowDownCollected.AddListener(OnSlowDownCollected);
+            MyEventManager.Game.OnPlayerDeath.AddListener(FinishUp);
+            MyEventManager.Game.OnLandedOnXCube.AddListener(OnLandedOnX);
+            MyEventManager.Game.OnLandedOnReverseCube.AddListener(OnLandedOnReverseCube);
+            MyEventManager.Game.Powerups.OnShieldCollected.AddListener(OnShieldCollected);
+            MyEventManager.Game.Powerups.OnSlowDownCollected.AddListener(OnSlowDownCollected);
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnPlayerDeath.RemoveListener(FinishUp);
-                MyEventManager.OnLandedOnXCube.RemoveListener(OnLandedOnX);
-                MyEventManager.OnLandedOnReverseCube.RemoveListener(OnLandedOnReverseCube);
-                MyEventManager.OnShieldCollected.RemoveListener(OnShieldCollected);
-                MyEventManager.OnSlowDownCollected.RemoveListener(OnSlowDownCollected);
+            MyEventManager.Game.OnPlayerDeath.RemoveListener(FinishUp);
+            MyEventManager.Game.OnLandedOnXCube.RemoveListener(OnLandedOnX);
+            MyEventManager.Game.OnLandedOnReverseCube.RemoveListener(OnLandedOnReverseCube);
+            MyEventManager.Game.Powerups.OnShieldCollected.RemoveListener(OnShieldCollected);
+            MyEventManager.Game.Powerups.OnSlowDownCollected.RemoveListener(OnSlowDownCollected);
         }
 
         private void FinishUp()
@@ -63,7 +63,6 @@ namespace BallDrop
             OnFillableActivated();
             Reverse.Activate(duration);
             ShowEffectText("Reverse");
-
         }
 
         private void OnLandedOnX(float duration, float scalefactor)
@@ -71,7 +70,6 @@ namespace BallDrop
             OnFillableActivated();
             X.Activate(duration);
             ShowEffectText("Scale Up");
-
         }
 
         public void OnFillableActivated()
@@ -92,7 +90,5 @@ namespace BallDrop
         {
             ObjectPool.Instance.GetEffectText().Activate(GameMenu, EffectTextRectTransform.anchoredPosition3D, Message);
         }
-
-
     }
 }

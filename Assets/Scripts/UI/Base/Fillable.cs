@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace BallDrop
 {
     public class Fillable : MonoBehaviour
@@ -10,12 +11,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.EndGame.AddListener(EndGame);
+            MyEventManager.Game.EndGame.AddListener(EndGame);
         }
 
         private void OnDisable()
         {
-                MyEventManager.EndGame.RemoveListener(EndGame);
+            MyEventManager.Game.EndGame.RemoveListener(EndGame);
         }
 
         private void Start()
@@ -68,6 +69,5 @@ namespace BallDrop
         {
             LeanTween.cancel(gameObject);
         }
-
     }
 }

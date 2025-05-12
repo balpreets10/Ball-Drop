@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 namespace BallDrop
 {
-    public class TrailImage : MonoBehaviour
+    public class TrailImage : GameComponent
     {
         public MeshRenderer meshRenderer;
-
 
         public void SetTrailTexture(Texture texture)
         {
@@ -21,16 +20,11 @@ namespace BallDrop
         public void Activate(Vector3 position)
         {
             LeanTween.alpha(gameObject, 1f, 0f);
-            gameObject.SetActive(true);
             transform.position = position;
             transform.localScale = Vector3.one * 0.7f;
+            Activate();
             LeanTween.alpha(gameObject, 0, .49f);
             LeanTween.scale(gameObject, Vector3.zero, .5f).setOnComplete(Deactivate);
-        }
-
-        public void Deactivate()
-        {
-            gameObject.SetActive(false);
         }
     }
 }

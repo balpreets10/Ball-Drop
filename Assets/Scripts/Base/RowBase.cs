@@ -6,21 +6,21 @@ using UnityEngine;
 
 namespace BallDrop.Base
 {
-    public class RowBase : MonoBehaviour, IRow
+    public class RowBase : GameComponent, IRow
     {
         private bool RowPassed = false;
         private List<ICube> rowCubes = new List<ICube>();
         public BoxCollider exitCollider;
         private WaitForSeconds colliderEnablingDelay = new WaitForSeconds(0.11f);
 
-        private void OnEnable()
+        public void OnEnable()
         {
-            MyEventManager.EndGame.AddListener(EndGame);
+            MyEventManager.Game.EndGame.AddListener(EndGame);
         }
 
         private void OnDisable()
         {
-                MyEventManager.EndGame.RemoveListener(EndGame);
+            MyEventManager.Game.EndGame.RemoveListener(EndGame);
         }
 
         private void OnTriggerExit(Collider other)
@@ -43,21 +43,24 @@ namespace BallDrop.Base
         public void OnPassedPlayer(bool animate)
         {
             ActivateNext();
-            MyEventManager.OnRowPassed.Dispatch();
+            MyEventManager.Game.Rows.OnRowPassed.Dispatch();
             Deactivate(animate);
         }
 
         public void ActivateAndSetPosition(List<float> positions, List<CubeType> cubes, Vector3 rowPosition)
         {
-            gameObject.SetActive(true);
+            Activate();
             rowCubes.Clear();
             RowPassed = false;
-            gameObject.transform.SetPositionAndRotation(rowPosition, Quaternion.identity);
+            transform.SetPositionAndRotation(rowPosition, Quaternion.identity);
             for (int i = 0; i < positions.Count; i++)
             {
                 ICube cube = ObjectPool.Instance.GetCube(cubes[i]).GetComponent<ICube>();
-                cube.ActivateAndSetPosition(transform, positions[i]);
-                rowCubes.Add(cube);
+                if (cube != null)
+                {
+                    cube.ActivateAndSetPosition(transform, positions[i]);
+                    rowCubes.Add(cube);
+                }
             }
             StartCoroutine(EnableCollider());
         }
@@ -65,7 +68,8 @@ namespace BallDrop.Base
         private IEnumerator EnableCollider()
         {
             yield return colliderEnablingDelay;
-            exitCollider.enabled = true;
+            if (exitCollider != null)
+                exitCollider.enabled = true;
         }
 
         private void EndGame()
@@ -79,14 +83,17 @@ namespace BallDrop.Base
             {
                 int subtype = UnityEngine.Random.Range(0, (int)CubeType.Invisible);
                 ICube cube = ObjectPool.Instance.GetCube((CubeType)subtype).GetComponent<ICube>();
-                cube.ActivateAndSetPosition(transform, zPos);
-                rowCubes.Add(cube);
+                if (cube != null)
+                {
+                    cube.ActivateAndSetPosition(transform, zPos);
+                    rowCubes.Add(cube);
+                }
             }
         }
 
         public void Deactivate(bool animate)
         {
-            MyEventManager.RemoveRow.Dispatch(this);
+            MyEventManager.Game.Rows.RemoveRow.Dispatch(this);
             if (gameObject.activeInHierarchy)
             {
                 StartCoroutine(DeactivateChildren(animate));
@@ -101,19 +108,22 @@ namespace BallDrop.Base
             foreach (ICube icube in rowCubes)
             {
                 icube.GetGameObject().transform.parent = ObjectPool.Instance.PooledObjectsHolder;
-                if (animate)
+                if (icube != null)
                 {
-                    GameData.Instance.playerGameData.AddCubeData(icube.GetBaseCubeType());
-                    icube.FlipAndDeactivate();
-                }
-                else
-                {
-                    icube.Deactivate();
+                    if (animate)
+                    {
+                        GameData.Instance.playerGameData.AddCubeData(icube.GetBaseCubeType());
+                        icube.FlipAndDeactivate();
+                    }
+                    else
+                    {
+                        icube.Deactivate();
+                    }
                 }
                 yield return null;
             }
             yield return new WaitForEndOfFrame();
-            gameObject.SetActive(false);
+            Deactivate();
         }
 
         public List<ICube> GetRowCubes()
@@ -133,7 +143,7 @@ namespace BallDrop.Base
 
         private void ActivateNext()
         {
-            MyEventManager.SpawnRow.Dispatch();
+            MyEventManager.Game.Rows.SpawnRow.Dispatch();
         }
 
         public GameObject GetGameObject()

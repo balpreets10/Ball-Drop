@@ -16,12 +16,12 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.LoginWithFacebook.AddListener(Login);
+            MyEventManager.Menu.LoginWithFacebook.AddListener(Login);
         }
 
         private void OnDisable()
         {
-                MyEventManager.LoginWithFacebook.RemoveListener(Login);
+            MyEventManager.Menu.LoginWithFacebook.RemoveListener(Login);
         }
 
         public void InitializeFacebook()
@@ -44,14 +44,12 @@ namespace BallDrop
             }
             else
             {
-                Debug.Log("Activating Fb");
                 FB.ActivateApp();
             }
         }
 
         private void OnHideUnity(bool isGameShown)
         {
-            Debug.Log("Hiding Unity");
             //Debug.Log(string.Format("Success Response: OnHideUnity Called {0}\n", isGameShown));
             //Debug.Log("Is game shown: " + isGameShown);
         }
@@ -74,7 +72,6 @@ namespace BallDrop
 
         private void OnFacebookLoggedIn(ILoginResult result)
         {
-            Debug.Log("Facebook Logged In");
             PreferenceManager.Instance.UpdateBoolpref(PrefKey.NotFirstGameOnline, true);
             if (result == null || string.IsNullOrEmpty(result.Error))
             {
@@ -90,12 +87,11 @@ namespace BallDrop
 
         private void APICallback(IGraphResult result)
         {
-            Debug.Log("API CAllback");
             Debug.unityLogger.Log(GameData.TAG, result.RawResult);
             FBData fBData = JsonUtility.FromJson<FBData>(result.RawResult.ToString());
             fBData.accessToken = AccessToken.CurrentAccessToken;
             PreferenceManager.Instance.UpdateStringPref(PrefKey.PlayerName, fBData.name);
-            MyEventManager.OnFacebookLoginComplete.Dispatch(fBData);
+            MyEventManager.Menu.OnFacebookLoginComplete.Dispatch(fBData);
         }
 
         //public void GetFriendList()

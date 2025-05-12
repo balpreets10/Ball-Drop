@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace BallDrop
 {
     public class CubeReverse : BaseCube
@@ -11,7 +12,7 @@ namespace BallDrop
 
         private Vector3 LeftInitialPosition, RightInitialPosition;
 
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
             LeftInitialPosition = LeftArrow.transform.localPosition;
@@ -33,7 +34,6 @@ namespace BallDrop
                 LeanTween.moveLocalZ(LeftArrow, 0.01f, .5f).setLoopPingPong();
             if (RightArrow != null)
                 LeanTween.moveLocalZ(RightArrow, -0.01f, .5f).setLoopPingPong();
-        
         }
 
         public override void Deactivate()
@@ -44,6 +44,5 @@ namespace BallDrop
                 LeanTween.cancel(RightArrow);
             base.Deactivate();
         }
-
     }
 }

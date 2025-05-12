@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BallDrop.Base
 {
-    public class BasePowerup : MonoBehaviour, IPowerup
+    public class BasePowerup : GameComponent, IPowerup
     {
         [SerializeField]
         private PowerupType powerType;
@@ -13,7 +13,7 @@ namespace BallDrop.Base
         private float Duration;
 
         [SerializeField]
-        AudioClip PowerUpSound;
+        private AudioClip PowerUpSound;
 
         bool IPowerup.activeInHierarchy { get { return gameObject.activeInHierarchy; } }
 
@@ -21,12 +21,12 @@ namespace BallDrop.Base
 
         private void OnEnable()
         {
-            MyEventManager.EndGame.AddListener(EndGame);
+            MyEventManager.Game.EndGame.AddListener(EndGame);
         }
 
         private void OnDisable()
         {
-                MyEventManager.EndGame.RemoveListener(EndGame);
+            MyEventManager.Game.EndGame.RemoveListener(EndGame);
         }
 
         private void EndGame()
@@ -36,7 +36,7 @@ namespace BallDrop.Base
 
         public void ActivateAndSetPosition(Vector3 pos)
         {
-            gameObject.SetActive(true);
+            Activate();
             gameObject.transform.SetPositionAndRotation(pos, Quaternion.identity);
             if (powerType == PowerupType.Shield)
             {
@@ -52,10 +52,10 @@ namespace BallDrop.Base
             }
         }
 
-        public void Deactivate()
+        public override void Deactivate()
         {
+            base.Deactivate();
             gameObject.transform.SetParent(ObjectPool.Instance.PooledObjectsHolder);
-            gameObject.SetActive(false);
         }
 
         public PowerupType GetPowerupType()
@@ -72,7 +72,6 @@ namespace BallDrop.Base
         {
             gameObject.SetActive(active);
         }
-
         public IPowerup GetIPowerup()
         {
             return this;

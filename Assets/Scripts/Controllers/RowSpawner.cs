@@ -13,24 +13,24 @@ namespace BallDrop
         private List<IRow> ActiveRows = new List<IRow>();
         public static GameObject CurrentRow;
 
-        IRowData rowDataObject;
-        Dictionary<float, CubeType> RowData;
-        WaitForSeconds WaitBetweenRowSpawn = new WaitForSeconds(0.05f);
+        private IRowData rowDataObject;
+        private Dictionary<float, CubeType> RowData;
+        private WaitForSeconds WaitBetweenRowSpawn = new WaitForSeconds(0.05f);
 
         private void OnEnable()
         {
-            MyEventManager.SpawnRow.AddListener(SpawnRow);
-            MyEventManager.RemoveRow.AddListener(RemoveRow);
+            MyEventManager.Game.Rows.SpawnRow.AddListener(SpawnRow);
+            MyEventManager.Game.Rows.RemoveRow.AddListener(RemoveRow);
             MyEventManager.SetPlayerPosAfterRevival.AddListener(SetBallNewPosition);
-            MyEventManager.EndGame.AddListener(EndGame);
+            MyEventManager.Game.EndGame.AddListener(EndGame);
         }
 
         private void OnDisable()
         {
-                MyEventManager.SpawnRow.RemoveListener(SpawnRow);
-                MyEventManager.RemoveRow.RemoveListener(RemoveRow);
-                MyEventManager.SetPlayerPosAfterRevival.RemoveListener(SetBallNewPosition);
-                MyEventManager.EndGame.RemoveListener(EndGame);
+            MyEventManager.Game.Rows.SpawnRow.RemoveListener(SpawnRow);
+            MyEventManager.Game.Rows.RemoveRow.RemoveListener(RemoveRow);
+            MyEventManager.SetPlayerPosAfterRevival.RemoveListener(SetBallNewPosition);
+            MyEventManager.Game.EndGame.RemoveListener(EndGame);
         }
 
         private IEnumerator Start()
@@ -59,7 +59,6 @@ namespace BallDrop
             RowData = rowDataObject.GetRowData(CurrentRowCounter, GameData.Instance.levelData.Level);
         }
 
-
         //Spawn Rows Initially at the start of Level
         private IEnumerator SpawnRows(int rowsToSpawn)
         {
@@ -68,7 +67,7 @@ namespace BallDrop
                 SpawnRow();
                 yield return WaitBetweenRowSpawn;
             }
-            MyEventManager.OnRowsSpawned.Dispatch();
+            MyEventManager.Game.Rows.OnRowsSpawned.Dispatch();
         }
 
         public void SpawnRow()

@@ -15,7 +15,7 @@ namespace BallDrop
     {
         private static T _instance;
 
-        private static object _lock = new object();
+        private static object _lock = new ();
 
         public static T Instance
         {
@@ -23,9 +23,6 @@ namespace BallDrop
             {
                 if (applicationIsQuitting)
                 {
-                    //XDebug.Log("[Singleton] Instance '" + typeof(T) +
-                    //    "' already destroyed on application quit." +
-                    //    " Won't create again - returning null.", null, XDebug.Color.Yellow);
                     return null;
                 }
 
@@ -45,7 +42,7 @@ namespace BallDrop
 
                         if (_instance == null)
                         {
-                            GameObject singleton = new GameObject();
+                            GameObject singleton = new ();
                             _instance = singleton.AddComponent<T>();
                             singleton.name = typeof(T).Name + " - singleton";
 

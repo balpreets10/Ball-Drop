@@ -20,11 +20,13 @@ namespace BallDrop
 
         [Header("Arcade Objects")]
         public GameObject ArcadePanel;
+
         public TextMeshProUGUI ScoreTextArcade, CoinsTextArcade;
         public Image CoinsImageArcade;
 
         [Header("Classic Objects")]
         public GameObject ClassicPanel;
+
         public TextMeshProUGUI ScoreTextClassic, CoinsTextClassic, RowCountClassic, RowsLeftCLassic, LevelText, NextLevelText;
         public RectTransform Star1_Transform, Star2_Transform, Star3_Transform;
         public Image ScoreFill, CoinImageClassic;
@@ -32,6 +34,7 @@ namespace BallDrop
 
         [Header("Progress Objects Classic")]
         public Slider ProgressSlider;
+
         public GameObject ScoreSlider;
 
         [Header("Score Panel Properties")]
@@ -41,22 +44,22 @@ namespace BallDrop
 
         private void OnEnable()
         {
-            MyEventManager.OnScoreUpdated.AddListener(OnScoreChanged);
-            MyEventManager.OnRowPassed.AddListener(OnRowPassed);
+            MyEventManager.Game.OnScoreUpdated.AddListener(OnScoreChanged);
+            MyEventManager.Game.Rows.OnRowPassed.AddListener(OnRowPassed);
             MyEventManager.OnCoinsUpdated.AddListener(OnCoinsUpdated);
-            ProgressSlider.wholeNumbers = false;
         }
 
         private void OnDisable()
         {
-                MyEventManager.OnScoreUpdated.RemoveListener(OnScoreChanged);
-                MyEventManager.OnRowPassed.RemoveListener(OnRowPassed);
-                MyEventManager.OnCoinsUpdated.RemoveListener(OnCoinsUpdated);
+            MyEventManager.Game.OnScoreUpdated.RemoveListener(OnScoreChanged);
+            MyEventManager.Game.Rows.OnRowPassed.RemoveListener(OnRowPassed);
+            MyEventManager.OnCoinsUpdated.RemoveListener(OnCoinsUpdated);
         }
 
         public override void Start()
         {
             base.Start();
+            Reset();
             if (GameData.Instance.gameMode == GameMode.Classic)
             {
                 SetUIForClassic();
@@ -66,6 +69,12 @@ namespace BallDrop
                 SetUIForArcade();
             }
             SetCoins();
+        }
+
+        private void Reset()
+        {
+            if (ProgressSlider != null)
+                ProgressSlider.wholeNumbers = false;
         }
 
         private void OnScoreChanged(int Increment)
@@ -84,7 +93,7 @@ namespace BallDrop
 
         private void OnRowPassed()
         {
-            RowCountClassic.text = GameData.Instance.playerGameData.RowsPassed.ToString();
+            SetRowText(GameData.Instance.playerGameData.RowsPassed.ToString());
             if (GameData.Instance.gameMode == GameMode.Classic)
             {
                 LeanTween.value(ProgressSlider.gameObject, OnValueChanged, ProgressSlider.value, GameData.Instance.playerGameData.RowsPassed, .1f);
@@ -109,8 +118,7 @@ namespace BallDrop
 
         private void SetUIForClassic()
         {
-            ClassicPanel.SetActive(true);
-            ArcadePanel.SetActive(false);
+            ToggleTopPanel(true);
             ScoreText = ScoreTextClassic;
             ScoreRect = ScoreText.GetComponent<RectTransform>();
             CoinsText = CoinsTextClassic;
@@ -118,15 +126,22 @@ namespace BallDrop
             ProgressSlider.maxValue = GameData.Instance.levelData.RowCount;
             ScoreFill.fillAmount = 0;
             RowsLeftCLassic.text = "/" + GameData.Instance.levelData.RowCount;
-            RowCountClassic.text = "0";
+            SetRowText("0");
             NextLevelText.text = (GameData.Instance.levelData.Level + 1).ToString();
             AnimateLevelHolder();
         }
 
+        private void ToggleTopPanel(bool isClassic)
+        {
+            if (ClassicPanel != null)
+                ClassicPanel.SetActive(isClassic);
+            if (ArcadePanel != null)
+                ArcadePanel.SetActive(!isClassic);
+        }
+
         private void SetUIForArcade()
         {
-            ClassicPanel.SetActive(false);
-            ArcadePanel.SetActive(true);
+            ToggleTopPanel(false);
             ScoreText = ScoreTextArcade;
             ScoreRect = ScoreText.GetComponent<RectTransform>();
             CoinsText = CoinsTextArcade;
@@ -137,7 +152,8 @@ namespace BallDrop
 
         private void SetCoins()
         {
-            CoinsText.text = PlayerDataManager.Instance.GetCoins().ToString();
+            if (CoinsText != null)
+                CoinsText.text = PlayerDataManager.Instance.GetCoins().ToString();
         }
 
         private void AnimateLevelHolder()
@@ -153,7 +169,8 @@ namespace BallDrop
 
         private void UpdateScale(float val)
         {
-            ScoreText.transform.parent.localScale = new Vector3(val, val, 1f);
+            if (ScoreText != null)
+                ScoreText.transform.parent.localScale = new Vector3(val, val, 1f);
         }
 
         private void AnimateStars()
@@ -170,14 +187,12 @@ namespace BallDrop
         {
             Star1_Transform.localScale = Star2_Transform.localScale = Star3_Transform.localScale = Vector3.one;
             Star1_Transform.localRotation = Star2_Transform.localRotation = Star3_Transform.localRotation = Quaternion.identity;
-
         }
-
-
 
         private void OnValueChanged(float value)
         {
-            ProgressSlider.value = value;
+            if (ProgressSlider != null)
+                ProgressSlider.value = value;
         }
 
         private void ShowScoreChanges(float val)
@@ -187,7 +202,7 @@ namespace BallDrop
             else
                 Debug.LogWarning("Score Text is Null");
 
-            if (GameData.Instance.gameMode == GameMode.Classic)
+            if (GameData.Instance.gameMode == GameMode.Classic && ScoreFill != null)
                 ScoreFill.fillAmount = val / GameData.Instance.levelData.GoldScore;
             UpdatedScore = Mathf.FloorToInt(val);
         }
@@ -224,8 +239,15 @@ namespace BallDrop
 
         public void PauseGame()
         {
-            MyEventManager.PauseGame.Dispatch();
+            MyEventManager.Game.PauseGame.Dispatch();
         }
 
+        private void SetRowText(string value)
+        {
+            if (RowCountClassic != null)
+            {
+                RowCountClassic.SetText(value);
+            }
+        }
     }
 }

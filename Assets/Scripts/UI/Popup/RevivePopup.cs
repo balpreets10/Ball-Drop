@@ -15,8 +15,8 @@ namespace BallDrop
 
         private void OnDisable()
         {
-                MyEventManager.ReviveOption.RemoveListener(ShowPopup);
-                MyEventManager.OnCompletedRevivalAd.RemoveListener(HidePopup);
+            MyEventManager.ReviveOption.RemoveListener(ShowPopup);
+            MyEventManager.OnCompletedRevivalAd.RemoveListener(HidePopup);
         }
 
         public override void ShowPopup()
