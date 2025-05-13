@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEngine;
+
 using System;
+
+#if UNITY_EDITOR
+using UnityEditor;
 
 public class UIUtilities : EditorWindow
 {
@@ -96,3 +97,5 @@ public class UIUtilities : EditorWindow
         }
     }
 }
+
+#endif
