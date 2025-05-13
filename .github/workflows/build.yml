@@ -1,6 +1,6 @@
 name: Build project
 
-on: fork
+on: push
 
 jobs:
   buildForAllSupportedPlatforms:
