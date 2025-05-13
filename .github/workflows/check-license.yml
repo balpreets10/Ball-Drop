@@ -3,7 +3,7 @@ on:
     workflow_dispatch: {}
 
 env:
-    UNITY_LICENCE:${{secrets.UNITY_LICENSE}}
+    UNITY_LICENSE:${{secrets.UNITY_LICENSE}}
     
 jobs:
     checkLicence:
