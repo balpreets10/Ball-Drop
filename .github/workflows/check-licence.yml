@@ -1,6 +1,6 @@
 name: Test Action
 on:
-workflow_dispatch: {}
+    workflow_dispatch: {}
 
 env:
     UNITY_LICENCE:${{secrets.UNITY_LICENSE}}
