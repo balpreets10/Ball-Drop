@@ -1,4 +1,4 @@
-name: Test Action
+name: Actions Template
 on:
     workflow_dispatch: {}
 
