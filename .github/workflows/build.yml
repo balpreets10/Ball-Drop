@@ -1,6 +1,8 @@
 name: Build project
 
-on: push
+on:
+  # push
+  workflow_dispatch: {}
 
 jobs:
   buildForAllSupportedPlatforms:
