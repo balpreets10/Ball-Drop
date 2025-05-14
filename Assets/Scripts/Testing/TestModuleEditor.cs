@@ -1,8 +1,10 @@
-﻿using UnityEditor;
+﻿
 using UnityEngine;
 using BallDrop.Interfaces;
 
 #if UNITY_EDITOR
+using UnityEditor;
+
 namespace BallDrop
 {
     // Declare type of Custom Editor
@@ -14,7 +16,7 @@ namespace BallDrop
         float labelWidth = 150f;
 
         string playerName = "Player 1";
-        string playerLevel = "1";
+        //string playerLevel = "1";
         string playerElo = "5";
         string playerScore = "100";
 
@@ -70,7 +72,7 @@ namespace BallDrop
                 IPowerup powerup = ObjectPool.Instance.GetVerticalBeamPowerup();
                 powerup.ActivateAndSetPosition(GetPosition());
             }
-           
+
 
             //GUILayout.EndHorizontal();
             // Custom Button with Image as Thumbnail

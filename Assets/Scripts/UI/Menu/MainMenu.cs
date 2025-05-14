@@ -54,7 +54,7 @@ namespace BallDrop
             MyEventManager.UpdateUI.RemoveListener(UpdateUI);
         }
 
-        private void Start()
+        protected override void Start()
         {
             if (PreferenceManager.Instance.GetBoolPref(PrefKey.FacebookLogin))
                 FacebookPanel.SetActive(false);
@@ -357,7 +357,7 @@ namespace BallDrop
             UnityWebRequest request = UnityWebRequestTexture.GetTexture(uri);
             yield return request.SendWebRequest();
 
-            if (request.isNetworkError || request.isHttpError)
+            if (request.result == UnityWebRequest.Result.ConnectionError)
                 Debug.Log(request.error);
             else
             {

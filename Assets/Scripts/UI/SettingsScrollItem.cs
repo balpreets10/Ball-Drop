@@ -12,7 +12,7 @@ namespace BallDrop
     {
         public Slider PlayerMovementSentivitySlider, MusicVolSlider, EffectsVolSlider;
 
-        private void Start()
+        protected override void Start()
         {
             PlayerMovementSentivitySlider.value = PreferenceManager.Instance.GetIntPref(PrefKey.MovementSensitivity, 8);
             MusicVolSlider.value = PreferenceManager.Instance.GetFloatPref(PrefKey.Music, 0.05f);

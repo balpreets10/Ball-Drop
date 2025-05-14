@@ -19,7 +19,7 @@ public class CheckConnection : SingletonMonoBehaviour<CheckConnection>
         {
             www.timeout = 5;
             yield return www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError)
+            if (www.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.unityLogger.Log(GameData.TAG, "Error While Sending: " + www.error);
                 OnUnavailable();
