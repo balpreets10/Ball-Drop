@@ -1,4 +1,4 @@
-name: Test Build Process
+name: Test and Build
 
 on:
   # push
@@ -151,10 +151,11 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
+          unityVersion: auto
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-StandaloneWindows64
+          name: BallDrop-StandaloneWindows64
           path: build/StandaloneWindows64
 
   # buildAndroid:
