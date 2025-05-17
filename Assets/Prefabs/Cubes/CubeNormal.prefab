@@ -83,7 +83,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 3
+  m_CollisionDetection: 1
 --- !u!23 &23508060730995552
 MeshRenderer:
   m_ObjectHideFlags: 0

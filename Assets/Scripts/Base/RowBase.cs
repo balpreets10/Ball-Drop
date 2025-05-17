@@ -25,6 +25,7 @@ namespace BallDrop.Base
 
         private void OnTriggerExit(Collider other)
         {
+            Debug.Log("Collider = " + other.tag);
             if (other.CompareTag(GameStrings.Player))
             {
                 if (!RowPassed)
