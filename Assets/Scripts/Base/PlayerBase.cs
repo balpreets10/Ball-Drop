@@ -142,6 +142,7 @@ namespace BallDrop
                 tweenStrip = LeanTween.value(m_Renderer.gameObject, 1, 0, 1.2f).setOnUpdate(UpdateStripHeight);
             else
                 tweenStrip = LeanTween.value(m_Renderer.gameObject, 1, .3f, .5f).setOnUpdate(UpdateStripHeight);
+            Debug.Log("Sensitivity = " + GameData.Instance.PlayerMovementSensitivity);
         }
 
         private void OnRowPassed()

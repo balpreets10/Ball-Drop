@@ -83,7 +83,7 @@ namespace BallDrop
         {
             while (true)
             {
-                transform.Translate(Vector2.down * Time.deltaTime * GameData.Instance.CurrentRowMovementSpeed);
+                //transform.Translate(Vector2.down * Time.deltaTime * GameData.Instance.CurrentRowMovementSpeed);
                 yield return null;
             }
         }
